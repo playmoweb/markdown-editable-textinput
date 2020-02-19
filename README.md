@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/playmoweb/markdown-editable-textinput.svg?branch=master)](https://travis-ci.org/playmoweb/markdown-editable-textinput)
+[![pub package](https://img.shields.io/pub/v/markdown_editable_textinput.svg)](https://pub.dev/packages/markdown_editable_textinput)
 [![codecov](https://codecov.io/gh/playmoweb/markdown-editable-textinput/branch/master/graph/badge.svg)](https://codecov.io/gh/playmoweb/markdown-editable-textinput)
 
 # markdown_editable_textinput
