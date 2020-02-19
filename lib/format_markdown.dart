@@ -1,4 +1,8 @@
+/// Use this class for converting String to [ResultMarkdown]
 class FormatMarkdown {
+  /// Convert [data] part into [ResultMarkdown] from [type].
+  /// Use [fromIndex] and [toIndex] for converting part of [data]
+  /// [titleSize] is used for markdown titles
   static ResultMarkdown convertToMarkdown(MarkdownType type, String data, int fromIndex, int toIndex,
       {int titleSize = 1}) {
     String changedData;
@@ -32,11 +36,36 @@ class FormatMarkdown {
   }
 }
 
+/// [ResultMarkdown] give you the converted [data] to markdown and the [cursorIndex]
 class ResultMarkdown {
+  /// String converted to mardown
   String data;
+
+  /// cursor index just after the converted part in markdown
   int cursorIndex;
 
+  /// Return [ResultMarkdown]
   ResultMarkdown(this.data, this.cursorIndex);
 }
 
-enum MarkdownType { bold, italic, link, title, list }
+/// Represent markdown possible type to convert
+
+enum MarkdownType {
+  /// For **bold** text
+  bold,
+
+  /// For _italic_ text
+  italic,
+
+  /// For [link](https://flutter.dev)
+  link,
+
+  /// For # Title or ## Title or ### Title
+  title,
+
+  /// For :
+  ///   * Item 1
+  ///   * Item 2
+  ///   * Item 3
+  list
+}
