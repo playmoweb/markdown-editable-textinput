@@ -26,7 +26,7 @@ The color of the MarkdownTextInput is defined by the color set in your Theme :
 | String initialValue | "Lorem Ipsum" | Display an initial value in MarkdownTextInput's field   |
 | Function validators |               | Add validators to the MarkdownTextInput                 |
 | String label        | "Description" | Display a label in MarkdownTextInput                    |
-| TextDirection textDirection       | TextterminDirection.rtl | Change text direction                   |
+| TextDirection textDirection       | TextDirection.rtl | Change text direction                   |
 
 ### Example
 You can see an example of how to use this package [here](https://github.com/playmoweb/markdown-editable-textinput/tree/master/example)
