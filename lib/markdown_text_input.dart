@@ -6,12 +6,14 @@ class MarkdownTextInput extends StatefulWidget {
   final String initialValue;
   final Function validators;
   final String label;
+  final TextDirection textDirection;
 
   MarkdownTextInput(
     this.onTextChanged,
     this.initialValue, {
     this.label,
     this.validators,
+    this.textDirection,
   });
 
   @override
@@ -24,12 +26,14 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
   void onTap(MarkdownType type, {int titleSize = 1}) {
     final basePosition = _controller.selection.baseOffset;
 
-    final result = FormatMarkdown.convertToMarkdown(
-        type, _controller.text, _controller.selection.baseOffset, _controller.selection.extentOffset,
+    final result = FormatMarkdown.convertToMarkdown(type, _controller.text,
+        _controller.selection.baseOffset, _controller.selection.extentOffset,
         titleSize: titleSize);
 
-    _controller.value = _controller.value
-        .copyWith(text: result.data, selection: TextSelection.collapsed(offset: basePosition + result.cursorIndex));
+    _controller.value = _controller.value.copyWith(
+        text: result.data,
+        selection:
+            TextSelection.collapsed(offset: basePosition + result.cursorIndex));
   }
 
   @override
@@ -62,19 +66,28 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
             maxLines: null,
             controller: _controller,
             textCapitalization: TextCapitalization.sentences,
-            validator: widget.validators != null ? (value) => widget.validators(value) as String : null,
+            validator: widget.validators != null
+                ? (value) => widget.validators(value) as String
+                : null,
             cursorColor: Theme.of(context).primaryColor,
+            textDirection: widget.textDirection ?? TextDirection.ltr,
             decoration: InputDecoration(
-              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor)),
-              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor)),
+              enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Theme.of(context).accentColor)),
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Theme.of(context).accentColor)),
               hintText: widget.label,
-              hintStyle: const TextStyle(color: Color.fromRGBO(63, 61, 86, 0.5)),
-              contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+              hintStyle:
+                  const TextStyle(color: Color.fromRGBO(63, 61, 86, 0.5)),
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
             ),
           ),
           Material(
             color: Theme.of(context).cardColor,
-            borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
+            borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(10),
+                bottomRight: Radius.circular(10)),
             child: Row(
               children: [
                 InkWell(
@@ -105,7 +118,9 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                       padding: const EdgeInsets.all(10),
                       child: Text(
                         'H$i',
-                        style: TextStyle(fontSize: (18 - i).toDouble(), fontWeight: FontWeight.w700),
+                        style: TextStyle(
+                            fontSize: (18 - i).toDouble(),
+                            fontWeight: FontWeight.w700),
                       ),
                     ),
                   ),
