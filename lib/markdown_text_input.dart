@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:markdown_editable_textinput/format_markdown.dart';
 
+/// Widget with markdown buttons
 class MarkdownTextInput extends StatefulWidget {
+  /// Callback called when text changed
   final Function onTextChanged;
+
+  /// Initial value you want to display
   final String initialValue;
+
+  /// Validator for the TextFormField
   final Function validators;
+
+  /// String displayed at hintText in TextFormField
   final String label;
   final TextDirection textDirection;
 
+  /// Constructor for [MarkdownTextInput]
   MarkdownTextInput(
     this.onTextChanged,
     this.initialValue, {
