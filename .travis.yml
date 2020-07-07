@@ -21,8 +21,8 @@ script:
     fi
 matrix:
   fast_finish: true
-  # allow_failures:
-  # - env: FLUTTER_CHANNEL="master"
+  allow_failures:
+   - env: FLUTTER_CHANNEL="master"
 cache:
   directories:
     - $HOME/.pub-cache

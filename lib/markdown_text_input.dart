@@ -15,12 +15,16 @@ class MarkdownTextInput extends StatefulWidget {
   /// String displayed at hintText in TextFormField
   final String label;
 
+  /// Change the text direction of the input (RTL / LTR)
+  final TextDirection textDirection;
+
   /// Constructor for [MarkdownTextInput]
   MarkdownTextInput(
     this.onTextChanged,
     this.initialValue, {
     this.label,
     this.validators,
+    this.textDirection,
   });
 
   @override
@@ -73,6 +77,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
             textCapitalization: TextCapitalization.sentences,
             validator: widget.validators != null ? (value) => widget.validators(value) as String : null,
             cursorColor: Theme.of(context).primaryColor,
+            textDirection: widget.textDirection ?? TextDirection.ltr,
             decoration: InputDecoration(
               enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor)),
               focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor)),
