@@ -33,28 +33,24 @@ class MarkdownTextInput extends StatefulWidget {
 
 class _MarkdownTextInputState extends State<MarkdownTextInput> {
   final _controller = TextEditingController();
-  TextSelection textSelection =
-      const TextSelection(baseOffset: 0, extentOffset: 0);
+  TextSelection textSelection = const TextSelection(baseOffset: 0, extentOffset: 0);
 
   void onTap(MarkdownType type, {int titleSize = 1}) {
     final basePosition = textSelection.baseOffset;
 
-    final result = FormatMarkdown.convertToMarkdown(type, _controller.text,
-        textSelection.baseOffset, textSelection.extentOffset,
+    final result = FormatMarkdown.convertToMarkdown(
+        type, _controller.text, textSelection.baseOffset, textSelection.extentOffset,
         titleSize: titleSize);
 
-    _controller.value = _controller.value.copyWith(
-        text: result.data,
-        selection:
-            TextSelection.collapsed(offset: basePosition + result.cursorIndex));
+    _controller.value = _controller.value
+        .copyWith(text: result.data, selection: TextSelection.collapsed(offset: basePosition + result.cursorIndex));
   }
 
   @override
   void initState() {
     _controller.text = widget.initialValue;
     _controller.addListener(() {
-      if (_controller.selection.baseOffset != -1)
-        textSelection = _controller.selection;
+      if (_controller.selection.baseOffset != -1) textSelection = _controller.selection;
       widget.onTextChanged(_controller.text);
     });
     super.initState();
@@ -81,28 +77,20 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
             maxLines: null,
             controller: _controller,
             textCapitalization: TextCapitalization.sentences,
-            validator: widget.validators != null
-                ? (value) => widget.validators(value) as String
-                : null,
+            validator: widget.validators != null ? (value) => widget.validators(value) as String : null,
             cursorColor: Theme.of(context).primaryColor,
             textDirection: widget.textDirection ?? TextDirection.ltr,
             decoration: InputDecoration(
-              enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).accentColor)),
-              focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).accentColor)),
+              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor)),
+              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor)),
               hintText: widget.label,
-              hintStyle:
-                  const TextStyle(color: Color.fromRGBO(63, 61, 86, 0.5)),
-              contentPadding:
-                  const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+              hintStyle: const TextStyle(color: Color.fromRGBO(63, 61, 86, 0.5)),
+              contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
             ),
           ),
           Material(
             color: Theme.of(context).cardColor,
-            borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10)),
+            borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
             child: Row(
               children: [
                 InkWell(
@@ -133,9 +121,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                       padding: const EdgeInsets.all(10),
                       child: Text(
                         'H$i',
-                        style: TextStyle(
-                            fontSize: (18 - i).toDouble(),
-                            fontWeight: FontWeight.w700),
+                        style: TextStyle(fontSize: (18 - i).toDouble(), fontWeight: FontWeight.w700),
                       ),
                     ),
                   ),
