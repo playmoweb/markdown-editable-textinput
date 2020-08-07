@@ -106,9 +106,8 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
             child: Row(
               children: [
                 InkWell(
-                  onTap: () {
-                    onTap(MarkdownType.bold);
-                  },
+                  key: const Key('bold_button'),
+                  onTap: () => onTap(MarkdownType.bold),
                   child: const Padding(
                     padding: EdgeInsets.all(10),
                     child: Icon(
