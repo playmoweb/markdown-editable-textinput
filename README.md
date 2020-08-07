@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/playmoweb/markdown-editable-textinput.svg?branch=master)](https://travis-ci.org/playmoweb/markdown-editable-textinput)
+[![pub package](https://img.shields.io/pub/v/markdown_editable_textinput.svg)](https://pub.dev/packages/markdown_editable_textinput)
 [![codecov](https://codecov.io/gh/playmoweb/markdown-editable-textinput/branch/master/graph/badge.svg)](https://codecov.io/gh/playmoweb/markdown-editable-textinput)
 
 # markdown_editable_textinput
@@ -7,6 +8,7 @@ MarkdownEditableTextInput is a TextField Widget that allow you to convert easily
 
 ## Features
 - [x] Convert to Bold, Italic, Title (h1,h2,h3), List and Link
+- [x] Support text direction
 - [ ] Customize textInput colors
 
 ## Demo
@@ -25,6 +27,7 @@ The color of the MarkdownTextInput is defined by the color set in your Theme :
 | String initialValue | "Lorem Ipsum" | Display an initial value in MarkdownTextInput's field   |
 | Function validators |               | Add validators to the MarkdownTextInput                 |
 | String label        | "Description" | Display a label in MarkdownTextInput                    |
+| TextDirection textDirection       | TextDirection.rtl | Change text direction                   |
 
 ### Example
 You can see an example of how to use this package [here](https://github.com/playmoweb/markdown-editable-textinput/tree/master/example)
