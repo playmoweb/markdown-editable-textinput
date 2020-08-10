@@ -29,21 +29,30 @@ class _MyAppState extends State<MyApp> {
           body: SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+              child: ListView(
                 children: <Widget>[
-                  MarkdownTextInput(
-                    (String value) => setState(() => description = value),
-                    description,
-                    label: 'Description',
-                  ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: MarkdownBody(
-                      data: description,
+                    padding: const EdgeInsets.symmetric(vertical: 100),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        MarkdownTextInput(
+                          (String value) => setState(() => description = value),
+                          description,
+                          label: 'Description',
+                          maxLines: 3,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: MarkdownBody(
+                            data: description,
+                            shrinkWrap: true,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
+                  )
                 ],
               ),
             ),
