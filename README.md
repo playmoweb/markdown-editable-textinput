@@ -28,6 +28,7 @@ The color of the MarkdownTextInput is defined by the color set in your Theme :
 | Function validators |               | Add validators to the MarkdownTextInput                 |
 | String label        | "Description" | Display a label in MarkdownTextInput                    |
 | TextDirection textDirection       | TextDirection.rtl | Change text direction                   |
+| int maxLines       | 3 | The maximum of lines that can be display in the input                |
 
 ### Example
 You can see an example of how to use this package [here](https://github.com/playmoweb/markdown-editable-textinput/tree/master/example)

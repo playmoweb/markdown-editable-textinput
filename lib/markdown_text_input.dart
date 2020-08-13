@@ -18,14 +18,12 @@ class MarkdownTextInput extends StatefulWidget {
   /// Change the text direction of the input (RTL / LTR)
   final TextDirection textDirection;
 
+  /// The maximum of lines that can be display in the input
+  final int maxLines;
+
   /// Constructor for [MarkdownTextInput]
-  MarkdownTextInput(
-    this.onTextChanged,
-    this.initialValue, {
-    this.label,
-    this.validators,
-    this.textDirection,
-  });
+  MarkdownTextInput(this.onTextChanged, this.initialValue,
+      {this.label, this.validators, this.textDirection, this.maxLines});
 
   @override
   _MarkdownTextInputState createState() => _MarkdownTextInputState();
@@ -33,12 +31,13 @@ class MarkdownTextInput extends StatefulWidget {
 
 class _MarkdownTextInputState extends State<MarkdownTextInput> {
   final _controller = TextEditingController();
+  TextSelection textSelection = const TextSelection(baseOffset: 0, extentOffset: 0);
 
   void onTap(MarkdownType type, {int titleSize = 1}) {
-    final basePosition = _controller.selection.baseOffset;
+    final basePosition = textSelection.baseOffset;
 
     final result = FormatMarkdown.convertToMarkdown(
-        type, _controller.text, _controller.selection.baseOffset, _controller.selection.extentOffset,
+        type, _controller.text, textSelection.baseOffset, textSelection.extentOffset,
         titleSize: titleSize);
 
     _controller.value = _controller.value
@@ -49,6 +48,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
   void initState() {
     _controller.text = widget.initialValue;
     _controller.addListener(() {
+      if (_controller.selection.baseOffset != -1) textSelection = _controller.selection;
       widget.onTextChanged(_controller.text);
     });
     super.initState();
@@ -72,7 +72,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
         children: <Widget>[
           TextFormField(
             textInputAction: TextInputAction.newline,
-            maxLines: null,
+            maxLines: widget.maxLines,
             controller: _controller,
             textCapitalization: TextCapitalization.sentences,
             validator: widget.validators != null ? (value) => widget.validators(value) as String : null,
@@ -94,8 +94,8 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                 InkWell(
                   key: const Key('bold_button'),
                   onTap: () => onTap(MarkdownType.bold),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
+                  child: const Padding(
+                    padding: EdgeInsets.all(10),
                     child: Icon(
                       Icons.format_bold,
                     ),
@@ -104,8 +104,8 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                 InkWell(
                   key: const Key('italic_button'),
                   onTap: () => onTap(MarkdownType.italic),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
+                  child: const Padding(
+                    padding: EdgeInsets.all(10),
                     child: Icon(
                       Icons.format_italic,
                     ),
@@ -126,8 +126,8 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                 InkWell(
                   key: const Key('link_button'),
                   onTap: () => onTap(MarkdownType.link),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
+                  child: const Padding(
+                    padding: EdgeInsets.all(10),
                     child: Icon(
                       Icons.link,
                     ),
@@ -136,8 +136,8 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                 InkWell(
                   key: const Key('list_button'),
                   onTap: () => onTap(MarkdownType.list),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
+                  child: const Padding(
+                    padding: EdgeInsets.all(10),
                     child: Icon(
                       Icons.list,
                     ),
