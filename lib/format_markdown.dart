@@ -3,8 +3,7 @@ class FormatMarkdown {
   /// Convert [data] part into [ResultMarkdown] from [type].
   /// Use [fromIndex] and [toIndex] for converting part of [data]
   /// [titleSize] is used for markdown titles
-  static ResultMarkdown convertToMarkdown(
-      MarkdownType type, String data, int fromIndex, int toIndex,
+  static ResultMarkdown convertToMarkdown(MarkdownType type, String data, int fromIndex, int toIndex,
       {int titleSize = 1}) {
     String changedData;
 
@@ -16,12 +15,10 @@ class FormatMarkdown {
         changedData = '_${data.substring(fromIndex, toIndex)}_';
         break;
       case MarkdownType.link:
-        changedData =
-            '[${data.substring(fromIndex, toIndex)}](${data.substring(fromIndex, toIndex)})';
+        changedData = '[${data.substring(fromIndex, toIndex)}](${data.substring(fromIndex, toIndex)})';
         break;
       case MarkdownType.title:
-        changedData =
-            "${"#" * titleSize} ${data.substring(fromIndex, toIndex)}";
+        changedData = "${"#" * titleSize} ${data.substring(fromIndex, toIndex)}";
         break;
       case MarkdownType.list:
         var index = 0;
@@ -35,10 +32,7 @@ class FormatMarkdown {
     final cursorIndex = changedData.length;
 
     return ResultMarkdown(
-        data.substring(0, fromIndex) +
-            changedData +
-            data.substring(toIndex, data.length),
-        cursorIndex);
+        data.substring(0, fromIndex) + changedData + data.substring(toIndex, data.length), cursorIndex);
   }
 }
 
