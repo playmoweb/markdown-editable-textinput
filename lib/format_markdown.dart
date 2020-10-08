@@ -3,8 +3,14 @@ class FormatMarkdown {
   /// Convert [data] part into [ResultMarkdown] from [type].
   /// Use [fromIndex] and [toIndex] for converting part of [data]
   /// [titleSize] is used for markdown titles
-  static ResultMarkdown convertToMarkdown(MarkdownType type, String data, int fromIndex, int toIndex,
-      {int titleSize = 1}) {
+  static ResultMarkdown convertToMarkdown(
+    MarkdownType type,
+    String data,
+    int fromIndex,
+    int toIndex, {
+    int titleSize = 1,
+    String link,
+  }) {
     String changedData;
 
     switch (type) {
@@ -15,7 +21,7 @@ class FormatMarkdown {
         changedData = '_${data.substring(fromIndex, toIndex)}_';
         break;
       case MarkdownType.link:
-        changedData = '[${data.substring(fromIndex, toIndex)}](${data.substring(fromIndex, toIndex)})';
+        changedData = '[${data.substring(fromIndex, toIndex)}]($link)';
         break;
       case MarkdownType.title:
         changedData = "${"#" * titleSize} ${data.substring(fromIndex, toIndex)}";
