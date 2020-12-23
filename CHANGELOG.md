@@ -1,4 +1,8 @@
-## [1.0.1] - 2020/06/18
+## [1.0.2] - 2020/12/23
+
+* Reposition cursor if style applied while no text were selected
+
+## [1.0.1] - 2020/08/13
 
 * Add web support
 
