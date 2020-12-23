@@ -6,7 +6,7 @@
 
 * Add web support
 
-## [1.0.0] - 2020/06/18
+## [1.0.0] - 2020/07/07
 
 * Add RTL support
 
@@ -15,6 +15,6 @@
 * Remove unused dependency
 * Add more docs
 
-## [0.0.1] - 2020/01/31
+## [0.0.1] - 2020/02/18
 
 * Initialize project
