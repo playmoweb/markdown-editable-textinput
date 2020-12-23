@@ -5,20 +5,26 @@ class FormatMarkdown {
   /// [titleSize] is used for markdown titles
   static ResultMarkdown convertToMarkdown(MarkdownType type, String data, int fromIndex, int toIndex,
       {int titleSize = 1}) {
+
     String changedData;
+    int replaceCursorIndex;
 
     switch (type) {
       case MarkdownType.bold:
         changedData = '**${data.substring(fromIndex, toIndex)}**';
+        replaceCursorIndex = 2;
         break;
       case MarkdownType.italic:
         changedData = '_${data.substring(fromIndex, toIndex)}_';
+        replaceCursorIndex = 1;
         break;
       case MarkdownType.link:
         changedData = '[${data.substring(fromIndex, toIndex)}](${data.substring(fromIndex, toIndex)})';
+        replaceCursorIndex = 3;
         break;
       case MarkdownType.title:
         changedData = "${"#" * titleSize} ${data.substring(fromIndex, toIndex)}";
+        replaceCursorIndex = 0;
         break;
       case MarkdownType.list:
         var index = 0;
@@ -27,12 +33,14 @@ class FormatMarkdown {
           index++;
           return index == splitedData.length ? '* $value' : '* $value\n';
         }).join();
+        replaceCursorIndex = 0;
         break;
     }
+
     final cursorIndex = changedData.length;
 
     return ResultMarkdown(
-        data.substring(0, fromIndex) + changedData + data.substring(toIndex, data.length), cursorIndex);
+        data.substring(0, fromIndex) + changedData + data.substring(toIndex, data.length), cursorIndex, replaceCursorIndex);
   }
 }
 
@@ -44,8 +52,11 @@ class ResultMarkdown {
   /// cursor index just after the converted part in markdown
   int cursorIndex;
 
+  /// index at which cursor need to be replaced if no text selected
+  int replaceCursorIndex;
+
   /// Return [ResultMarkdown]
-  ResultMarkdown(this.data, this.cursorIndex);
+  ResultMarkdown(this.data, this.cursorIndex, this.replaceCursorIndex);
 }
 
 /// Represent markdown possible type to convert

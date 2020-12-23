@@ -35,6 +35,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
 
   void onTap(MarkdownType type, {int titleSize = 1}) {
     final basePosition = textSelection.baseOffset;
+    var noTextSelected = (textSelection.baseOffset - textSelection.extentOffset) == 0;
 
     final result = FormatMarkdown.convertToMarkdown(
         type, _controller.text, textSelection.baseOffset, textSelection.extentOffset,
@@ -42,6 +43,10 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
 
     _controller.value = _controller.value
         .copyWith(text: result.data, selection: TextSelection.collapsed(offset: basePosition + result.cursorIndex));
+
+    if(noTextSelected) {
+      _controller.selection = TextSelection.collapsed(offset: _controller.selection.end - result.replaceCursorIndex);
+    }
   }
 
   @override
