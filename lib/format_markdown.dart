@@ -5,7 +5,6 @@ class FormatMarkdown {
   /// [titleSize] is used for markdown titles
   static ResultMarkdown convertToMarkdown(MarkdownType type, String data, int fromIndex, int toIndex,
       {int titleSize = 1}) {
-
     String changedData;
     int replaceCursorIndex;
 
@@ -39,8 +38,8 @@ class FormatMarkdown {
 
     final cursorIndex = changedData.length;
 
-    return ResultMarkdown(
-        data.substring(0, fromIndex) + changedData + data.substring(toIndex, data.length), cursorIndex, replaceCursorIndex);
+    return ResultMarkdown(data.substring(0, fromIndex) + changedData + data.substring(toIndex, data.length),
+        cursorIndex, replaceCursorIndex);
   }
 }
 
