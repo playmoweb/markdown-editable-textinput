@@ -1,9 +1,12 @@
+import 'package:flutter/material.dart';
+
 /// Use this class for converting String to [ResultMarkdown]
 class FormatMarkdown {
   /// Convert [data] part into [ResultMarkdown] from [type].
   /// Use [fromIndex] and [toIndex] for converting part of [data]
   /// [titleSize] is used for markdown titles
-  static ResultMarkdown convertToMarkdown(MarkdownType type, String data, int fromIndex, int toIndex,
+  static ResultMarkdown convertToMarkdown(
+      MarkdownType type, String data, int fromIndex, int toIndex,
       {int titleSize = 1}) {
     String changedData;
     int replaceCursorIndex;
@@ -18,11 +21,13 @@ class FormatMarkdown {
         replaceCursorIndex = 1;
         break;
       case MarkdownType.link:
-        changedData = '[${data.substring(fromIndex, toIndex)}](${data.substring(fromIndex, toIndex)})';
+        changedData =
+            '[${data.substring(fromIndex, toIndex)}](${data.substring(fromIndex, toIndex)})';
         replaceCursorIndex = 3;
         break;
       case MarkdownType.title:
-        changedData = "${"#" * titleSize} ${data.substring(fromIndex, toIndex)}";
+        changedData =
+            "${"#" * titleSize} ${data.substring(fromIndex, toIndex)}";
         replaceCursorIndex = 0;
         break;
       case MarkdownType.list:
@@ -38,8 +43,12 @@ class FormatMarkdown {
 
     final cursorIndex = changedData.length;
 
-    return ResultMarkdown(data.substring(0, fromIndex) + changedData + data.substring(toIndex, data.length),
-        cursorIndex, replaceCursorIndex);
+    return ResultMarkdown(
+        data.substring(0, fromIndex) +
+            changedData +
+            data.substring(toIndex, data.length),
+        cursorIndex,
+        replaceCursorIndex);
   }
 }
 
@@ -78,4 +87,77 @@ enum MarkdownType {
   ///   * Item 2
   ///   * Item 3
   list
+}
+
+/// Extension to enable additional functionalities to the enum
+extension MarkdownTypeExtension on MarkdownType {
+  /// Gets the button widget associated to each type
+  Widget widget(Function(MarkdownType, {int titleSize}) onTap) {
+    switch (this) {
+      case MarkdownType.bold:
+        return InkWell(
+          key: const Key('bold_button'),
+          onTap: () => onTap(MarkdownType.bold),
+          child: const Padding(
+            padding: EdgeInsets.all(10),
+            child: Icon(
+              Icons.format_bold,
+            ),
+          ),
+        );
+      case MarkdownType.italic:
+        return InkWell(
+          key: const Key('italic_button'),
+          onTap: () => onTap(MarkdownType.italic),
+          child: const Padding(
+            padding: EdgeInsets.all(10),
+            child: Icon(
+              Icons.format_italic,
+            ),
+          ),
+        );
+      case MarkdownType.title:
+        return Row(
+          children: [1, 2, 3]
+              .map((i) => InkWell(
+                    key: Key('H${i}_button'),
+                    onTap: () => onTap(MarkdownType.title, titleSize: i),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Text(
+                        'H$i',
+                        style: TextStyle(
+                            fontSize: (18 - i).toDouble(),
+                            fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                  ))
+              .toList(),
+        );
+      case MarkdownType.link:
+        return InkWell(
+          key: const Key('link_button'),
+          onTap: () => onTap(MarkdownType.link),
+          child: const Padding(
+            padding: EdgeInsets.all(10),
+            child: Icon(
+              Icons.link,
+            ),
+          ),
+        );
+      case MarkdownType.list:
+        return InkWell(
+          key: const Key('list_button'),
+          onTap: () => onTap(MarkdownType.list),
+          child: const Padding(
+            padding: EdgeInsets.all(10),
+            child: Icon(
+              Icons.list,
+            ),
+          ),
+        );
+      default:
+        return Container();
+    }
+  }
 }

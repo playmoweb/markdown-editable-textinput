@@ -5,7 +5,7 @@ homepage: https://github.com/playmoweb/markdown-editable-textinput
 repository: https://github.com/playmoweb/markdown-editable-textinput
 
 environment:
-  sdk: ">=2.2.2 <3.0.0"
+  sdk: ">=2.6.0 <3.0.0"
 
 dependencies:
   flutter:
