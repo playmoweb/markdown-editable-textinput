@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
                           (String value) => setState(() => description = value),
                           description,
                           label: 'Description',
-                          maxLines: 10,
+                          maxLines: 2,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 10),

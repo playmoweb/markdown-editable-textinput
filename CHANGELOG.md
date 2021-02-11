@@ -1,4 +1,4 @@
-## [1.0.2] - 2020/12/23
+## [1.0.2] - 2021/02/11
 
 * Reposition cursor if style applied while no text were selected
 
