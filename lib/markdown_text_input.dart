@@ -10,7 +10,7 @@ class MarkdownTextInput extends StatefulWidget {
   final String initialValue;
 
   /// Validator for the TextFormField
-  final Function validators;
+  final String Function(String value) validators;
 
   /// String displayed at hintText in TextFormField
   final String label;
@@ -23,7 +23,7 @@ class MarkdownTextInput extends StatefulWidget {
 
   /// Constructor for [MarkdownTextInput]
   MarkdownTextInput(this.onTextChanged, this.initialValue,
-      {this.label, this.validators, this.textDirection, this.maxLines});
+      {this.label = '', this.validators, this.textDirection = TextDirection.ltr, this.maxLines = 10});
 
   @override
   _MarkdownTextInputState createState() => _MarkdownTextInputState();
@@ -35,6 +35,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
 
   void onTap(MarkdownType type, {int titleSize = 1}) {
     final basePosition = textSelection.baseOffset;
+    var noTextSelected = (textSelection.baseOffset - textSelection.extentOffset) == 0;
 
     final result = FormatMarkdown.convertToMarkdown(
         type, _controller.text, textSelection.baseOffset, textSelection.extentOffset,
@@ -42,6 +43,10 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
 
     _controller.value = _controller.value
         .copyWith(text: result.data, selection: TextSelection.collapsed(offset: basePosition + result.cursorIndex));
+
+    if (noTextSelected) {
+      _controller.selection = TextSelection.collapsed(offset: _controller.selection.end - result.replaceCursorIndex);
+    }
   }
 
   @override
@@ -75,7 +80,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
             maxLines: widget.maxLines,
             controller: _controller,
             textCapitalization: TextCapitalization.sentences,
-            validator: widget.validators != null ? (value) => widget.validators(value) as String : null,
+            validator: (value) => widget.validators(value),
             cursorColor: Theme.of(context).primaryColor,
             textDirection: widget.textDirection ?? TextDirection.ltr,
             decoration: InputDecoration(

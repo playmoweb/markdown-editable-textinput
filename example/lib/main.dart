@@ -4,6 +4,7 @@ import 'package:markdown_editable_textinput/markdown_text_input.dart';
 
 void main() => runApp(MyApp());
 
+// ignore: public_member_api_docs
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
@@ -17,10 +18,10 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Theme(
         data: ThemeData(
-          primaryColor: const Color(0xFF2B3409),
-          accentColor: const Color(0xFF71881B),
-          cardColor: const Color(0xFFF7FBEA),
-          textTheme: const TextTheme(body1: TextStyle(fontSize: 20)),
+          primaryColor: const Color(0xFF2C1C6B),
+          accentColor: const Color(0xFF200681),
+          cardColor: const Color(0xFFF8F9FC),
+          textTheme: const TextTheme(bodyText2: TextStyle(fontSize: 20)),
         ),
         child: Scaffold(
           appBar: AppBar(
@@ -41,7 +42,7 @@ class _MyAppState extends State<MyApp> {
                           (String value) => setState(() => description = value),
                           description,
                           label: 'Description',
-                          maxLines: 3,
+                          maxLines: 2,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 10),
