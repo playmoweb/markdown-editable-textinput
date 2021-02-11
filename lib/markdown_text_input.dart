@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:markdown_editable_textinput/format_markdown.dart';
 
 /// Widget with markdown buttons
@@ -36,6 +37,9 @@ class MarkdownTextInput extends StatefulWidget {
   /// TextFormField's inputDecoration
   final InputDecoration inputDecoration;
 
+  /// List of inputFormatters to be added to the textfield
+  final List<TextInputFormatter> inputFormatters;
+
   /// Constructor for [MarkdownTextInput]
   MarkdownTextInput(
     this.onTextChanged,
@@ -55,6 +59,7 @@ class MarkdownTextInput extends StatefulWidget {
     this.cursorColor,
     this.decoration,
     this.inputDecoration,
+    this.inputFormatters = const [],
   });
 
   @override
@@ -131,6 +136,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
       child: Column(
         children: <Widget>[
           TextFormField(
+            inputFormatters: widget.inputFormatters,
             textInputAction: TextInputAction.newline,
             maxLines: widget.maxLines,
             controller: _controller,
