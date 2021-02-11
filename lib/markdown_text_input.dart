@@ -21,9 +21,25 @@ class MarkdownTextInput extends StatefulWidget {
   /// The maximum of lines that can be display in the input
   final int maxLines;
 
+  /// Buttons to be shown on the editor
+  final List<MarkdownType> availableFunctions;
+
   /// Constructor for [MarkdownTextInput]
-  MarkdownTextInput(this.onTextChanged, this.initialValue,
-      {this.label = '', this.validators, this.textDirection = TextDirection.ltr, this.maxLines = 10});
+  MarkdownTextInput(
+    this.onTextChanged,
+    this.initialValue, {
+    this.label = '',
+    this.validators,
+    this.textDirection = TextDirection.ltr,
+    this.maxLines = 10,
+    this.availableFunctions = const [
+      MarkdownType.bold,
+      MarkdownType.italic,
+      MarkdownType.title,
+      MarkdownType.link,
+      MarkdownType.list,
+    ],
+  });
 
   @override
   _MarkdownTextInputState createState() => _MarkdownTextInputState();
@@ -31,21 +47,26 @@ class MarkdownTextInput extends StatefulWidget {
 
 class _MarkdownTextInputState extends State<MarkdownTextInput> {
   final _controller = TextEditingController();
-  TextSelection textSelection = const TextSelection(baseOffset: 0, extentOffset: 0);
+  TextSelection textSelection =
+      const TextSelection(baseOffset: 0, extentOffset: 0);
 
   void onTap(MarkdownType type, {int titleSize = 1}) {
     final basePosition = textSelection.baseOffset;
-    var noTextSelected = (textSelection.baseOffset - textSelection.extentOffset) == 0;
+    var noTextSelected =
+        (textSelection.baseOffset - textSelection.extentOffset) == 0;
 
-    final result = FormatMarkdown.convertToMarkdown(
-        type, _controller.text, textSelection.baseOffset, textSelection.extentOffset,
+    final result = FormatMarkdown.convertToMarkdown(type, _controller.text,
+        textSelection.baseOffset, textSelection.extentOffset,
         titleSize: titleSize);
 
-    _controller.value = _controller.value
-        .copyWith(text: result.data, selection: TextSelection.collapsed(offset: basePosition + result.cursorIndex));
+    _controller.value = _controller.value.copyWith(
+        text: result.data,
+        selection:
+            TextSelection.collapsed(offset: basePosition + result.cursorIndex));
 
     if (noTextSelected) {
-      _controller.selection = TextSelection.collapsed(offset: _controller.selection.end - result.replaceCursorIndex);
+      _controller.selection = TextSelection.collapsed(
+          offset: _controller.selection.end - result.replaceCursorIndex);
     }
   }
 
@@ -53,7 +74,8 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
   void initState() {
     _controller.text = widget.initialValue;
     _controller.addListener(() {
-      if (_controller.selection.baseOffset != -1) textSelection = _controller.selection;
+      if (_controller.selection.baseOffset != -1)
+        textSelection = _controller.selection;
       widget.onTextChanged(_controller.text);
     });
     super.initState();
@@ -84,73 +106,30 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
             cursorColor: Theme.of(context).primaryColor,
             textDirection: widget.textDirection ?? TextDirection.ltr,
             decoration: InputDecoration(
-              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor)),
-              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor)),
+              enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Theme.of(context).accentColor)),
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Theme.of(context).accentColor)),
               hintText: widget.label,
-              hintStyle: const TextStyle(color: Color.fromRGBO(63, 61, 86, 0.5)),
-              contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+              hintStyle:
+                  const TextStyle(color: Color.fromRGBO(63, 61, 86, 0.5)),
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
             ),
           ),
           Material(
             color: Theme.of(context).cardColor,
-            borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
+            borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(10),
+                bottomRight: Radius.circular(10)),
             child: Row(
               children: [
-                InkWell(
-                  key: const Key('bold_button'),
-                  onTap: () => onTap(MarkdownType.bold),
-                  child: const Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Icon(
-                      Icons.format_bold,
-                    ),
-                  ),
-                ),
-                InkWell(
-                  key: const Key('italic_button'),
-                  onTap: () => onTap(MarkdownType.italic),
-                  child: const Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Icon(
-                      Icons.format_italic,
-                    ),
-                  ),
-                ),
-                for (int i = 1; i <= 3; i++)
-                  InkWell(
-                    key: Key('H${i}_button'),
-                    onTap: () => onTap(MarkdownType.title, titleSize: i),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Text(
-                        'H$i',
-                        style: TextStyle(fontSize: (18 - i).toDouble(), fontWeight: FontWeight.w700),
-                      ),
-                    ),
-                  ),
-                InkWell(
-                  key: const Key('link_button'),
-                  onTap: () => onTap(MarkdownType.link),
-                  child: const Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Icon(
-                      Icons.link,
-                    ),
-                  ),
-                ),
-                InkWell(
-                  key: const Key('list_button'),
-                  onTap: () => onTap(MarkdownType.list),
-                  child: const Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Icon(
-                      Icons.list,
-                    ),
-                  ),
-                ),
+                ...widget.availableFunctions
+                    .map((b) => b.widget(onTap))
+                    .toList()
               ],
             ),
-          )
+          ),
         ],
       ),
     );
