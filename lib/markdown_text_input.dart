@@ -24,6 +24,18 @@ class MarkdownTextInput extends StatefulWidget {
   /// Buttons to be shown on the editor
   final List<MarkdownType> availableFunctions;
 
+  /// Text capitalization strategy
+  final TextCapitalization textCapitalization;
+
+  /// Cursor color, defaults to [Theme.of(context).primaryColor]
+  final Color cursorColor;
+
+  /// Outer box decoration
+  final BoxDecoration decoration;
+
+  /// TextFormField's inputDecoration
+  final InputDecoration inputDecoration;
+
   /// Constructor for [MarkdownTextInput]
   MarkdownTextInput(
     this.onTextChanged,
@@ -39,6 +51,10 @@ class MarkdownTextInput extends StatefulWidget {
       MarkdownType.link,
       MarkdownType.list,
     ],
+    this.textCapitalization = TextCapitalization.sentences,
+    this.cursorColor,
+    this.decoration,
+    this.inputDecoration,
   });
 
   @override
@@ -89,33 +105,40 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
+    var decoration = widget.decoration ??
+        BoxDecoration(
+          color: theme.cardColor,
+          border: Border.all(color: theme.accentColor, width: 2),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+        );
+
+    var inputDecoration = widget.inputDecoration ??
+        InputDecoration(
+          enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: theme.accentColor)),
+          focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: theme.accentColor)),
+          hintText: widget.label,
+          hintStyle: const TextStyle(color: Color.fromRGBO(63, 61, 86, 0.5)),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+        );
+
     return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        border: Border.all(color: Theme.of(context).accentColor, width: 2),
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-      ),
+      decoration: decoration,
       child: Column(
         children: <Widget>[
           TextFormField(
             textInputAction: TextInputAction.newline,
             maxLines: widget.maxLines,
             controller: _controller,
-            textCapitalization: TextCapitalization.sentences,
-            validator: (value) => widget.validators(value),
-            cursorColor: Theme.of(context).primaryColor,
-            textDirection: widget.textDirection ?? TextDirection.ltr,
-            decoration: InputDecoration(
-              enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).accentColor)),
-              focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).accentColor)),
-              hintText: widget.label,
-              hintStyle:
-                  const TextStyle(color: Color.fromRGBO(63, 61, 86, 0.5)),
-              contentPadding:
-                  const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-            ),
+            textCapitalization: widget.textCapitalization,
+            validator: widget?.validators,
+            cursorColor: widget.cursorColor,
+            textDirection: widget.textDirection,
+            decoration: inputDecoration,
           ),
           Material(
             color: Theme.of(context).cardColor,
