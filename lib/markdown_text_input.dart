@@ -4,7 +4,7 @@ import 'package:markdown_editable_textinput/format_markdown.dart';
 /// Widget with markdown buttons
 class MarkdownTextInput extends StatefulWidget {
   /// Callback called when text changed
-  final Function onTextChanged;
+  final Function(String) onTextChanged;
 
   /// Initial value you want to display
   final String initialValue;
