@@ -5,8 +5,8 @@ class FormatMarkdown {
   /// [titleSize] is used for markdown titles
   static ResultMarkdown convertToMarkdown(MarkdownType type, String data, int fromIndex, int toIndex,
       {int titleSize = 1}) {
-    String changedData;
-    int replaceCursorIndex;
+    late String changedData;
+    int? replaceCursorIndex;
 
     switch (type) {
       case MarkdownType.bold:
@@ -52,7 +52,7 @@ class ResultMarkdown {
   int cursorIndex;
 
   /// index at which cursor need to be replaced if no text selected
-  int replaceCursorIndex;
+  int? replaceCursorIndex;
 
   /// Return [ResultMarkdown]
   ResultMarkdown(this.data, this.cursorIndex, this.replaceCursorIndex);

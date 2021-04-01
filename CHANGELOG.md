@@ -1,3 +1,7 @@
+## [2.0.0] - 2021/04/01
+
+* Migrate to null-safety.
+
 ## [1.0.2] - 2021/02/11
 
 * Reposition cursor if style applied while no text were selected
