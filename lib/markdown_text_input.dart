@@ -45,7 +45,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
         .copyWith(text: result.data, selection: TextSelection.collapsed(offset: basePosition + result.cursorIndex));
 
     if (noTextSelected) {
-      _controller.selection = TextSelection.collapsed(offset: _controller.selection.end - result.replaceCursorIndex!);
+      _controller.selection = TextSelection.collapsed(offset: _controller.selection.end - result.replaceCursorIndex);
     }
   }
 
