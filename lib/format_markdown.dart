@@ -5,8 +5,8 @@ class FormatMarkdown {
   /// [titleSize] is used for markdown titles
   static ResultMarkdown convertToMarkdown(MarkdownType type, String data, int fromIndex, int toIndex,
       {int titleSize = 1}) {
-    String changedData;
-    int replaceCursorIndex;
+    late String changedData;
+    late int replaceCursorIndex;
 
     switch (type) {
       case MarkdownType.bold:
