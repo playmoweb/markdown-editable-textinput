@@ -157,6 +157,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                   ),
                   ExpandableNotifier(
                     child: Expandable(
+                      key: Key('H#_button'),
                       collapsed: ExpandableButton(
                         child: const Center(
                           child: Padding(
