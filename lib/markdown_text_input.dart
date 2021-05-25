@@ -24,10 +24,7 @@ class MarkdownTextInput extends StatefulWidget {
 
   /// Constructor for [MarkdownTextInput]
   MarkdownTextInput(this.onTextChanged, this.initialValue,
-      {this.label = '',
-      this.validators,
-      this.textDirection = TextDirection.ltr,
-      this.maxLines = 10});
+      {this.label = '', this.validators, this.textDirection = TextDirection.ltr, this.maxLines = 10});
 
   @override
   _MarkdownTextInputState createState() => _MarkdownTextInputState();
@@ -35,26 +32,21 @@ class MarkdownTextInput extends StatefulWidget {
 
 class _MarkdownTextInputState extends State<MarkdownTextInput> {
   final _controller = TextEditingController();
-  TextSelection textSelection =
-      const TextSelection(baseOffset: 0, extentOffset: 0);
+  TextSelection textSelection = const TextSelection(baseOffset: 0, extentOffset: 0);
 
   void onTap(MarkdownType type, {int titleSize = 1}) {
     final basePosition = textSelection.baseOffset;
-    var noTextSelected =
-        (textSelection.baseOffset - textSelection.extentOffset) == 0;
+    var noTextSelected = (textSelection.baseOffset - textSelection.extentOffset) == 0;
 
-    final result = FormatMarkdown.convertToMarkdown(type, _controller.text,
-        textSelection.baseOffset, textSelection.extentOffset,
+    final result = FormatMarkdown.convertToMarkdown(
+        type, _controller.text, textSelection.baseOffset, textSelection.extentOffset,
         titleSize: titleSize);
 
-    _controller.value = _controller.value.copyWith(
-        text: result.data,
-        selection:
-            TextSelection.collapsed(offset: basePosition + result.cursorIndex));
+    _controller.value = _controller.value
+        .copyWith(text: result.data, selection: TextSelection.collapsed(offset: basePosition + result.cursorIndex));
 
     if (noTextSelected) {
-      _controller.selection = TextSelection.collapsed(
-          offset: _controller.selection.end - result.replaceCursorIndex);
+      _controller.selection = TextSelection.collapsed(offset: _controller.selection.end - result.replaceCursorIndex);
     }
   }
 
@@ -62,8 +54,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
   void initState() {
     _controller.text = widget.initialValue;
     _controller.addListener(() {
-      if (_controller.selection.baseOffset != -1)
-        textSelection = _controller.selection;
+      if (_controller.selection.baseOffset != -1) textSelection = _controller.selection;
       widget.onTextChanged(_controller.text);
     });
     super.initState();
@@ -94,24 +85,18 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
             cursorColor: Theme.of(context).primaryColor,
             textDirection: widget.textDirection,
             decoration: InputDecoration(
-              enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).accentColor)),
-              focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).accentColor)),
+              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor)),
+              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor)),
               hintText: widget.label,
-              hintStyle:
-                  const TextStyle(color: Color.fromRGBO(63, 61, 86, 0.5)),
-              contentPadding:
-                  const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+              hintStyle: const TextStyle(color: Color.fromRGBO(63, 61, 86, 0.5)),
+              contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
             ),
           ),
           SizedBox(
             height: 44,
             child: Material(
               color: Theme.of(context).cardColor,
-              borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10)),
+              borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
@@ -164,8 +149,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                             padding: EdgeInsets.all(10),
                             child: Text(
                               'H#',
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w700),
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                             ),
                           ),
                         ),
@@ -177,15 +161,12 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                             for (int i = 1; i <= 6; i++)
                               InkWell(
                                 key: Key('H${i}_button'),
-                                onTap: () =>
-                                    onTap(MarkdownType.title, titleSize: i),
+                                onTap: () => onTap(MarkdownType.title, titleSize: i),
                                 child: Padding(
                                   padding: const EdgeInsets.all(10),
                                   child: Text(
                                     'H$i',
-                                    style: TextStyle(
-                                        fontSize: (18 - i).toDouble(),
-                                        fontWeight: FontWeight.w700),
+                                    style: TextStyle(fontSize: (18 - i).toDouble(), fontWeight: FontWeight.w700),
                                   ),
                                 ),
                               ),
