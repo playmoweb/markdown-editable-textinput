@@ -7,11 +7,13 @@
 MarkdownEditableTextInput is a TextField Widget that allow you to convert easily what's in the TextField to Markdown.
 
 ## Features
-- [x] Convert to Bold, Italic, Title (h1,h2,h3), List and Link
+- [x] Convert to Bold, Italic, Strikethrough
+- [x] Convert to Code, Quote, Links
+- [x] Convert to Heading (H1, H2, H3, H4, H5, H6) and Links
 - [x] Support text direction
 
 ## Demo
-![](pictures/test_edition.gif)
+https://user-images.githubusercontent.com/60510869/119675122-65409f00-be5a-11eb-8cc4-c0f8757030ab.mp4
 
 ## Usage
 The color of the MarkdownTextInput is defined by the color set in your Theme :
