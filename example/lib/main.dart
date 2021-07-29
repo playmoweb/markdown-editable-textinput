@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:markdown_editable_textinput/format_markdown.dart';
 import 'package:markdown_editable_textinput/markdown_text_input.dart';
 
 void main() => runApp(MyApp());
@@ -42,7 +43,8 @@ class _MyAppState extends State<MyApp> {
                           (String value) => setState(() => description = value),
                           description,
                           label: 'Description',
-                          maxLines: 2,
+                          maxLines: 10,
+                          actions: MarkdownType.values,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 10),

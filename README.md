@@ -13,7 +13,7 @@ MarkdownEditableTextInput is a TextField Widget that allow you to convert easily
 - [x] Support text direction
 
 ## Demo
-https://user-images.githubusercontent.com/60510869/119675122-65409f00-be5a-11eb-8cc4-c0f8757030ab.mp4
+![](pictures/test_edition.gif)
 
 ## Usage
 The color of the MarkdownTextInput is defined by the color set in your Theme :
@@ -30,6 +30,7 @@ The color of the MarkdownTextInput is defined by the color set in your Theme :
 | String label        | "Description" | Display a label in MarkdownTextInput                    |
 | TextDirection textDirection       | TextDirection.rtl | Change text direction                   |
 | int maxLines       | 3 | The maximum of lines that can be display in the input                |
+| List<MarkdownType> actions       | [MarkdownType.bold, MardownType.italic] | Actions the editor will handle               |
 
 ### Example
 You can see an example of how to use this package [here](https://github.com/playmoweb/markdown-editable-textinput/tree/master/example)
