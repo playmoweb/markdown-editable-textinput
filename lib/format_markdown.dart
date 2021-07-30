@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 /// Use this class for converting String to [ResultMarkdown]
 class FormatMarkdown {
   /// Convert [data] part into [ResultMarkdown] from [type].
@@ -84,7 +86,6 @@ class ResultMarkdown {
 }
 
 /// Represent markdown possible type to convert
-
 enum MarkdownType {
   /// For **bold** text
   bold,
@@ -119,6 +120,61 @@ enum MarkdownType {
   /// For adding ------
   separator,
 
-  /// For ![Alt text](https://picsum.photos/500/500)
+  /// For ![Alt text](link)
   image,
+}
+
+/// Add data to [MarkdownType] enum
+extension MarkownTypeExtension on MarkdownType {
+  /// Get String used in widget's key
+  String get key {
+    switch (this) {
+      case MarkdownType.bold:
+        return 'bold_button';
+      case MarkdownType.italic:
+        return 'italic_button';
+      case MarkdownType.strikethrough:
+        return 'strikethrough_button';
+      case MarkdownType.link:
+        return 'link_button';
+      case MarkdownType.title:
+        return 'H#_button';
+      case MarkdownType.list:
+        return 'list_button';
+      case MarkdownType.code:
+        return 'code_button';
+      case MarkdownType.blockquote:
+        return 'quote_button';
+      case MarkdownType.separator:
+        return 'separator_button';
+      case MarkdownType.image:
+        return 'image_button';
+    }
+  }
+
+  /// Get Icon String
+  IconData get icon {
+    switch (this) {
+      case MarkdownType.bold:
+        return Icons.format_bold;
+      case MarkdownType.italic:
+        return Icons.format_italic;
+      case MarkdownType.strikethrough:
+        return Icons.format_strikethrough;
+      case MarkdownType.link:
+        return Icons.link;
+      case MarkdownType.title:
+        return Icons.text_fields;
+      case MarkdownType.list:
+        return Icons.list;
+      case MarkdownType.code:
+        return Icons.code;
+      case MarkdownType.blockquote:
+        return Icons.format_quote_rounded;
+      case MarkdownType.separator:
+        return Icons.minimize_rounded;
+      case MarkdownType.image:
+        return Icons.image_rounded;
+    }
+  }
 }

@@ -11,20 +11,36 @@ class MarkdownTextInput extends StatefulWidget {
   final String initialValue;
 
   /// Validator for the TextFormField
-  final String Function(String? value)? validators;
+  final String? Function(String? value)? validators;
 
   /// String displayed at hintText in TextFormField
-  final String label;
+  final String? label;
 
   /// Change the text direction of the input (RTL / LTR)
-  final TextDirection textDirection;
+  final TextDirection? textDirection;
 
   /// The maximum of lines that can be display in the input
-  final int maxLines;
+  final int? maxLines;
+
+  /// List of action the component can handle
+  final List<MarkdownType> actions;
 
   /// Constructor for [MarkdownTextInput]
-  MarkdownTextInput(this.onTextChanged, this.initialValue,
-      {this.label = '', this.validators, this.textDirection = TextDirection.ltr, this.maxLines = 10});
+  MarkdownTextInput(
+    this.onTextChanged,
+    this.initialValue, {
+    this.label = '',
+    this.validators,
+    this.textDirection = TextDirection.ltr,
+    this.maxLines = 10,
+    this.actions = const [
+      MarkdownType.bold,
+      MarkdownType.italic,
+      MarkdownType.title,
+      MarkdownType.link,
+      MarkdownType.list
+    ],
+  });
 
   @override
   _MarkdownTextInputState createState() => _MarkdownTextInputState();
@@ -99,141 +115,60 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
               borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                children: [
-                  InkWell(
-                    key: const Key('bold_button'),
-                    onTap: () => onTap(MarkdownType.bold),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Icon(
-                        Icons.format_bold,
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    key: const Key('italic_button'),
-                    onTap: () => onTap(MarkdownType.italic),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Icon(
-                        Icons.format_italic,
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    key: const Key('strikethrough_button'),
-                    onTap: () => onTap(MarkdownType.strikethrough),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Icon(
-                        Icons.format_strikethrough,
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    key: const Key('code_button'),
-                    onTap: () => onTap(MarkdownType.code),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Icon(
-                        Icons.code,
-                      ),
-                    ),
-                  ),
-                  ExpandableNotifier(
-                    child: Expandable(
-                      key: Key('H#_button'),
-                      collapsed: ExpandableButton(
-                        child: const Center(
-                          child: Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Text(
-                              'H#',
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                            ),
-                          ),
-                        ),
-                      ),
-                      expanded: Container(
-                        color: Colors.white10,
-                        child: Row(
-                          children: [
-                            for (int i = 1; i <= 6; i++)
-                              InkWell(
-                                key: Key('H${i}_button'),
-                                onTap: () => onTap(MarkdownType.title, titleSize: i),
+                children: widget.actions.map((type) {
+                  return type == MarkdownType.title
+                      ? ExpandableNotifier(
+                          child: Expandable(
+                            key: Key('H#_button'),
+                            collapsed: ExpandableButton(
+                              child: const Center(
                                 child: Padding(
-                                  padding: const EdgeInsets.all(10),
+                                  padding: EdgeInsets.all(10),
                                   child: Text(
-                                    'H$i',
-                                    style: TextStyle(fontSize: (18 - i).toDouble(), fontWeight: FontWeight.w700),
+                                    'H#',
+                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                                   ),
                                 ),
                               ),
-                            ExpandableButton(
-                              child: const Padding(
-                                padding: EdgeInsets.all(10),
-                                child: Icon(
-                                  Icons.close,
-                                ),
+                            ),
+                            expanded: Container(
+                              color: Colors.white10,
+                              child: Row(
+                                children: [
+                                  for (int i = 1; i <= 6; i++)
+                                    InkWell(
+                                      key: Key('H${i}_button'),
+                                      onTap: () => onTap(MarkdownType.title, titleSize: i),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10),
+                                        child: Text(
+                                          'H$i',
+                                          style: TextStyle(fontSize: (18 - i).toDouble(), fontWeight: FontWeight.w700),
+                                        ),
+                                      ),
+                                    ),
+                                  ExpandableButton(
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(10),
+                                      child: Icon(
+                                        Icons.close,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    key: const Key('link_button'),
-                    onTap: () => onTap(MarkdownType.link),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Icon(
-                        Icons.link,
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    key: const Key('list_button'),
-                    onTap: () => onTap(MarkdownType.list),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Icon(
-                        Icons.list,
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    key: const Key('quote_button'),
-                    onTap: () => onTap(MarkdownType.blockquote),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Icon(
-                        Icons.format_quote_rounded,
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    key: const Key('separator_button'),
-                    onTap: () => onTap(MarkdownType.separator),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Icon(
-                        Icons.minimize_rounded,
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    key: const Key('image_button'),
-                    onTap: () => onTap(MarkdownType.image),
-                    child: const Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Icon(
-                        Icons.image_rounded,
-                      ),
-                    ),
-                  ),
-                ],
+                          ),
+                        )
+                      : InkWell(
+                          key: Key(type.key),
+                          onTap: () => onTap(type),
+                          child: Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Icon(type.icon),
+                          ),
+                        );
+                }).toList(),
               ),
             ),
           )

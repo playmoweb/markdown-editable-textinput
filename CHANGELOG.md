@@ -1,3 +1,8 @@
+## [2.0.1] - 2021/07/30
+
+* Add support for strikethrough, code, blockquote, separator and images.
+* Custom actions supported by the input.
+
 ## [2.0.0] - 2021/04/01
 
 * Migrate to null-safety.
