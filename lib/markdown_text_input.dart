@@ -92,7 +92,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        border: Border.all(color: Theme.of(context).accentColor, width: 2),
+        border: Border.all(color: Theme.of(context).colorScheme.secondary, width: 2),
         borderRadius: const BorderRadius.all(Radius.circular(10)),
       ),
       child: Column(
