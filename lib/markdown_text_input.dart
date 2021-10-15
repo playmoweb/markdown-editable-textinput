@@ -106,8 +106,10 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
             cursorColor: Theme.of(context).primaryColor,
             textDirection: widget.textDirection,
             decoration: InputDecoration(
-              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary)),
-              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary)),
+              enabledBorder:
+                  UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary)),
+              focusedBorder:
+                  UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary)),
               hintText: widget.label,
               hintStyle: const TextStyle(color: Color.fromRGBO(63, 61, 86, 0.5)),
               contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
