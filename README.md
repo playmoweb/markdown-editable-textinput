@@ -18,7 +18,7 @@ MarkdownEditableTextInput is a TextField Widget that allow you to convert easily
 ## Usage
 The color of the MarkdownTextInput is defined by the color set in your Theme :
 - primaryColor: Cursor's color
-- accentColor: MarkdownTextInput's borders
+- colorScheme.secondary: MarkdownTextInput's borders
 - cardColor: Background color of MarkdownTextInput
 
 ### Attributes
