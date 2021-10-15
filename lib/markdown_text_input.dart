@@ -25,6 +25,9 @@ class MarkdownTextInput extends StatefulWidget {
   /// List of action the component can handle
   final List<MarkdownType> actions;
 
+  /// Optionnal controller to manage the input
+  final TextEditingController? controller;
+
   /// Constructor for [MarkdownTextInput]
   MarkdownTextInput(
     this.onTextChanged,
@@ -40,6 +43,7 @@ class MarkdownTextInput extends StatefulWidget {
       MarkdownType.link,
       MarkdownType.list
     ],
+    this.controller,
   });
 
   @override
@@ -47,7 +51,7 @@ class MarkdownTextInput extends StatefulWidget {
 }
 
 class _MarkdownTextInputState extends State<MarkdownTextInput> {
-  final _controller = TextEditingController();
+  TextEditingController _controller = TextEditingController();
   TextSelection textSelection = const TextSelection(baseOffset: 0, extentOffset: 0);
 
   void onTap(MarkdownType type, {int titleSize = 1}) {
@@ -68,6 +72,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
 
   @override
   void initState() {
+    _controller = widget.controller ?? TextEditingController();
     _controller.text = widget.initialValue;
     _controller.addListener(() {
       if (_controller.selection.baseOffset != -1) textSelection = _controller.selection;
@@ -101,8 +106,8 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
             cursorColor: Theme.of(context).primaryColor,
             textDirection: widget.textDirection,
             decoration: InputDecoration(
-              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor)),
-              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor)),
+              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary)),
+              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary)),
               hintText: widget.label,
               hintStyle: const TextStyle(color: Color.fromRGBO(63, 61, 86, 0.5)),
               contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),

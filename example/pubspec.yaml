@@ -17,7 +17,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   markdown_editable_textinput:
     path: ../
-  flutter_markdown: ^0.3.3
+  flutter_markdown: ^0.6.7
 
 
 dev_dependencies:

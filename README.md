@@ -31,6 +31,7 @@ The color of the MarkdownTextInput is defined by the color set in your Theme :
 | TextDirection textDirection       | TextDirection.rtl | Change text direction                   |
 | int maxLines       | 3 | The maximum of lines that can be display in the input                |
 | List<MarkdownType> actions       | [MarkdownType.bold, MardownType.italic] | Actions the editor will handle               |
+| TextEditingController controller       | TextEditingController() | Pass your own controller. Can be used to clear the input for example            |
 
 ### Example
 You can see an example of how to use this package [here](https://github.com/playmoweb/markdown-editable-textinput/tree/master/example)
