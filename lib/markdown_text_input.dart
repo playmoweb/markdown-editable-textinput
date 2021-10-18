@@ -47,12 +47,14 @@ class MarkdownTextInput extends StatefulWidget {
   });
 
   @override
-  _MarkdownTextInputState createState() => _MarkdownTextInputState();
+  _MarkdownTextInputState createState() => _MarkdownTextInputState(controller ?? TextEditingController());
 }
 
 class _MarkdownTextInputState extends State<MarkdownTextInput> {
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller;
   TextSelection textSelection = const TextSelection(baseOffset: 0, extentOffset: 0);
+
+  _MarkdownTextInputState(this._controller);
 
   void onTap(MarkdownType type, {int titleSize = 1}) {
     final basePosition = textSelection.baseOffset;
@@ -72,7 +74,6 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
 
   @override
   void initState() {
-    _controller = widget.controller ?? TextEditingController();
     _controller.text = widget.initialValue;
     _controller.addListener(() {
       if (_controller.selection.baseOffset != -1) textSelection = _controller.selection;
