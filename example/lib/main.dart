@@ -13,6 +13,16 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String description = 'My great package';
+  TextEditingController controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    controller.addListener(() {
+      print(controller.text);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +30,7 @@ class _MyAppState extends State<MyApp> {
       home: Theme(
         data: ThemeData(
           primaryColor: const Color(0xFF2C1C6B),
-          accentColor: const Color(0xFF200681),
+          colorScheme: ColorScheme.light().copyWith(secondary: const Color(0xFF200681)),
           cardColor: const Color(0xFFF8F9FC),
           textTheme: const TextTheme(bodyText2: TextStyle(fontSize: 20)),
         ),
@@ -45,6 +55,13 @@ class _MyAppState extends State<MyApp> {
                           label: 'Description',
                           maxLines: 10,
                           actions: MarkdownType.values,
+                          controller: controller,
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            controller.clear();
+                          },
+                          child: Text('Clear'),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 10),

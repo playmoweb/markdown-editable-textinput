@@ -1,3 +1,7 @@
+## [2.0.2] - 2021/10/26
+
+* Add a controller parameter
+
 ## [2.0.1] - 2021/07/30
 
 * Add support for strikethrough, code, blockquote, separator and images.

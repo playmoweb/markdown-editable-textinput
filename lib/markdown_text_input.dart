@@ -25,6 +25,9 @@ class MarkdownTextInput extends StatefulWidget {
   /// List of action the component can handle
   final List<MarkdownType> actions;
 
+  /// Optionnal controller to manage the input
+  final TextEditingController? controller;
+
   /// Constructor for [MarkdownTextInput]
   MarkdownTextInput(
     this.onTextChanged,
@@ -40,15 +43,18 @@ class MarkdownTextInput extends StatefulWidget {
       MarkdownType.link,
       MarkdownType.list
     ],
+    this.controller,
   });
 
   @override
-  _MarkdownTextInputState createState() => _MarkdownTextInputState();
+  _MarkdownTextInputState createState() => _MarkdownTextInputState(controller ?? TextEditingController());
 }
 
 class _MarkdownTextInputState extends State<MarkdownTextInput> {
-  final _controller = TextEditingController();
+  final TextEditingController _controller;
   TextSelection textSelection = const TextSelection(baseOffset: 0, extentOffset: 0);
+
+  _MarkdownTextInputState(this._controller);
 
   void onTap(MarkdownType type, {int titleSize = 1}) {
     final basePosition = textSelection.baseOffset;
@@ -87,7 +93,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        border: Border.all(color: Theme.of(context).accentColor, width: 2),
+        border: Border.all(color: Theme.of(context).colorScheme.secondary, width: 2),
         borderRadius: const BorderRadius.all(Radius.circular(10)),
       ),
       child: Column(
@@ -101,8 +107,10 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
             cursorColor: Theme.of(context).primaryColor,
             textDirection: widget.textDirection,
             decoration: InputDecoration(
-              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor)),
-              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor)),
+              enabledBorder:
+                  UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary)),
+              focusedBorder:
+                  UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary)),
               hintText: widget.label,
               hintStyle: const TextStyle(color: Color.fromRGBO(63, 61, 86, 0.5)),
               contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
