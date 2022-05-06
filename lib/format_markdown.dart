@@ -33,10 +33,10 @@ class FormatMarkdown {
         break;
       case MarkdownType.list:
         var index = 0;
-        final splitedData = data.substring(fromIndex, toIndex).split('\n');
-        changedData = splitedData.map((value) {
+        final splitData = data.substring(fromIndex, toIndex).split('\n');
+        changedData = splitData.map((value) {
           index++;
-          return index == splitedData.length ? '* $value' : '* $value\n';
+          return index == splitData.length ? '* $value' : '* $value\n';
         }).join();
         replaceCursorIndex = 0;
         break;
@@ -46,10 +46,10 @@ class FormatMarkdown {
         break;
       case MarkdownType.blockquote:
         var index = 0;
-        final splitedData = data.substring(fromIndex, toIndex).split('\n');
-        changedData = splitedData.map((value) {
+        final splitData = data.substring(fromIndex, toIndex).split('\n');
+        changedData = splitData.map((value) {
           index++;
-          return index == splitedData.length ? '> $value' : '> $value\n';
+          return index == splitData.length ? '> $value' : '> $value\n';
         }).join();
         replaceCursorIndex = 0;
         break;
