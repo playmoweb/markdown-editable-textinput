@@ -40,6 +40,9 @@ class MarkdownTextInput extends StatefulWidget {
   /// `Padding` of `Actions button` widget
   final EdgeInsets actionsButtonPadding;
 
+  /// Color of `cursorColor`
+  final Color? cursorColor;
+
   /// Constructor for [MarkdownTextInput]
   MarkdownTextInput(
     this.onTextChanged, {
@@ -60,6 +63,7 @@ class MarkdownTextInput extends StatefulWidget {
     this.actionsBoxDecoration,
     this.separaterHeight = 15,
     this.actionsButtonPadding = const EdgeInsets.all(15),
+    this.cursorColor,
   });
 
   @override
@@ -118,7 +122,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
       children: <Widget>[
         Container(
           clipBehavior: Clip.hardEdge,
-          decoration: widget.actionsBoxDecoration,
+          decoration: widget.actionsBoxDecoration ?? BoxDecoration(),
           width: widget.fillActions ? double.maxFinite : null,
           child: Material(
             color: Colors.transparent,
@@ -199,8 +203,8 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
           controller: _controller,
           textCapitalization: TextCapitalization.sentences,
           validator: (value) => widget.validators!(value),
-          cursorColor: Theme.of(context).primaryColor,
           textDirection: widget.textDirection,
+          cursorColor: widget.cursorColor,
           decoration: widget.inputDecoration,
         ),
       ],

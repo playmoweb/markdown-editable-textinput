@@ -1,6 +1,6 @@
 name: markdown_editable_textinput
 description: A TextField Widget that allow you to convert easily what's in the TextField to Markdown.
-version: 2.0.3
+version: 2.0.4
 homepage: https://github.com/maripbekoff/markdown-editable-textinput
 repository: https://github.com/maripbekoff/markdown-editable-textinput
 
