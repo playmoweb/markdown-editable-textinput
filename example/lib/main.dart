@@ -30,7 +30,8 @@ class _MyAppState extends State<MyApp> {
       home: Theme(
         data: ThemeData(
           primaryColor: const Color(0xFF2C1C6B),
-          colorScheme: ColorScheme.light().copyWith(secondary: const Color(0xFF200681)),
+          colorScheme:
+              ColorScheme.light().copyWith(secondary: const Color(0xFF200681)),
           cardColor: const Color(0xFFF8F9FC),
           textTheme: const TextTheme(bodyText2: TextStyle(fontSize: 20)),
         ),
@@ -51,11 +52,46 @@ class _MyAppState extends State<MyApp> {
                       children: <Widget>[
                         MarkdownTextInput(
                           (String value) => setState(() => description = value),
-                          description,
-                          label: 'Description',
                           maxLines: 10,
-                          actions: MarkdownType.values,
                           controller: controller,
+                          actionsBoxDecoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.lightBlue),
+                          ),
+                          actions: MarkdownType.values,
+                          fillActions: false,
+                          inputDecoration: InputDecoration(
+                            hintText:
+                                'I have been working for the weekend, but this weekend never came..',
+                            hintStyle: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            errorStyle: TextStyle(
+                              color: Colors.red,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            hintMaxLines: 2,
+                            errorMaxLines: 2,
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: Color(0xFF5856D6),
+                              ),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: Color(0xFF5856D6),
+                              ),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            contentPadding: const EdgeInsets.all(20),
+                          ),
                         ),
                         TextButton(
                           onPressed: () {

@@ -7,13 +7,14 @@
 MarkdownEditableTextInput is a TextField Widget that allow you to convert easily what's in the TextField to Markdown.
 
 ## Features
+- [x] Customization of input and actions
 - [x] Convert to Bold, Italic, Strikethrough
 - [x] Convert to Code, Quote, Links
 - [x] Convert to Heading (H1, H2, H3, H4, H5, H6) and Links
 - [x] Support text direction
 
 ## Demo
-![](pictures/test_edition.gif)
+![](pictures/preview.gif)
 
 ## Usage
 The color of the MarkdownTextInput is defined by the color set in your Theme :
@@ -35,5 +36,3 @@ The color of the MarkdownTextInput is defined by the color set in your Theme :
 
 ### Example
 You can see an example of how to use this package [here](https://github.com/playmoweb/markdown-editable-textinput/tree/master/example)
-
-
