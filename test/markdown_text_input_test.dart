@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:markdown_editable_textinput/markdown_text_input.dart';
 
 void main() {
   testWidgets('MarkdownTextInput has all buttons', (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(home: Scaffold(body: MarkdownTextInput(print, 'initial value'))));
+    await tester.pumpWidget(MaterialApp(home: Scaffold(body: MarkdownTextInput(print, initialValue: 'initial value'))));
     final boldKey = const Key('bold_button');
     final italicKey = const Key('italic_button');
     final strikethroughKey = const Key('strikethrough_button');
@@ -45,7 +44,7 @@ void main() {
         home: Scaffold(
             body: MarkdownTextInput((String value) {
       initialValue = value;
-    }, initialValue))));
+    }, initialValue: 'initial value'))));
 
     final formfield = tester.widget<EditableText>(find.text(initialValue));
     formfield.controller.selection = TextSelection(baseOffset: 0, extentOffset: initialValue.length);
@@ -62,7 +61,7 @@ void main() {
         home: Scaffold(
             body: MarkdownTextInput((String value) {
       initialValue = value;
-    }, initialValue))));
+    }, initialValue: 'initial value'))));
 
     final formfield = tester.widget<EditableText>(find.text(initialValue));
     formfield.controller.selection = TextSelection(baseOffset: 0, extentOffset: initialValue.length);
@@ -79,7 +78,7 @@ void main() {
         home: Scaffold(
             body: MarkdownTextInput((String value) {
       initialValue = value;
-    }, initialValue))));
+    }, initialValue: 'initial value'))));
 
     final formfield = tester.widget<EditableText>(find.text(initialValue));
     formfield.controller.selection = TextSelection(baseOffset: 0, extentOffset: initialValue.length);
@@ -96,7 +95,7 @@ void main() {
         home: Scaffold(
             body: MarkdownTextInput((String value) {
       initialValue = value;
-    }, initialValue))));
+    }, initialValue: 'initial value'))));
 
     final formfield = tester.widget<EditableText>(find.text(initialValue));
     formfield.controller.selection = TextSelection(baseOffset: 0, extentOffset: initialValue.length);
@@ -113,7 +112,7 @@ void main() {
         home: Scaffold(
             body: MarkdownTextInput((String value) {
       initialValue = value;
-    }, initialValue))));
+    }, initialValue: 'initial value'))));
 
     final formfield = tester.widget<EditableText>(find.text(initialValue));
     formfield.controller.selection = TextSelection(baseOffset: 0, extentOffset: initialValue.length);
@@ -130,7 +129,7 @@ void main() {
         home: Scaffold(
             body: MarkdownTextInput((String value) {
       initialValue = value;
-    }, initialValue))));
+    }, initialValue: 'initial value'))));
 
     final formfield = tester.widget<EditableText>(find.text(initialValue));
     formfield.controller.selection = TextSelection(baseOffset: 0, extentOffset: initialValue.length);
@@ -147,7 +146,7 @@ void main() {
         home: Scaffold(
             body: MarkdownTextInput((String value) {
       initialValue = value;
-    }, initialValue))));
+    }, initialValue: 'initial value'))));
 
     final formfield = tester.widget<EditableText>(find.text(initialValue));
     formfield.controller.selection = TextSelection(baseOffset: 0, extentOffset: initialValue.length);
@@ -164,7 +163,7 @@ void main() {
         home: Scaffold(
             body: MarkdownTextInput((String value) {
       initialValue = value;
-    }, initialValue))));
+    }, initialValue: 'initial value'))));
 
     final formfield = tester.widget<EditableText>(find.text(initialValue));
     formfield.controller.selection = TextSelection(baseOffset: 0, extentOffset: initialValue.length);
@@ -181,7 +180,7 @@ void main() {
         home: Scaffold(
             body: MarkdownTextInput((String value) {
       initialValue = value;
-    }, initialValue))));
+    }, initialValue: 'initial value'))));
 
     final formfield = tester.widget<EditableText>(find.text(initialValue));
     formfield.controller.selection = TextSelection(baseOffset: 0, extentOffset: initialValue.length);

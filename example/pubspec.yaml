@@ -17,20 +17,17 @@ dependencies:
   cupertino_icons: ^0.1.2
   markdown_editable_textinput:
     path: ../
-  flutter_markdown: ^0.6.7
-
+  flutter_markdown: ^0.6.10
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

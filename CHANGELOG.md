@@ -1,3 +1,8 @@
+## [2.0.3] - 2022/05/14
+
+* Added customizations for decoration of TextFormField
+* Added separator between TextFormField and Actions
+
 ## [2.0.2] - 2021/10/26
 
 * Add a controller parameter
