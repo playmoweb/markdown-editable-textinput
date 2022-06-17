@@ -10,6 +10,12 @@ class FormatMarkdown {
     late String changedData;
     late int replaceCursorIndex;
 
+    final greaterIndex = fromIndex > toIndex ? fromIndex : toIndex;
+    final lesserIndex = fromIndex < toIndex ? fromIndex : toIndex;
+
+    fromIndex = greaterIndex;
+    toIndex = lesserIndex;
+    
     switch (type) {
       case MarkdownType.bold:
         changedData = '**${data.substring(fromIndex, toIndex)}**';
