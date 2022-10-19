@@ -1,3 +1,7 @@
+## [2.0.3] - 2022/10/19
+
+* Add as node to request focus and get back to field on any action click.
+
 ## [2.0.2] - 2021/10/26
 
 * Add a controller parameter

@@ -1,6 +1,6 @@
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:markdown_editable_textinput/format_markdown.dart';
-import 'package:expandable/expandable.dart';
 
 /// Widget with markdown buttons
 class MarkdownTextInput extends StatefulWidget {
