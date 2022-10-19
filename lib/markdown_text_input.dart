@@ -53,6 +53,7 @@ class MarkdownTextInput extends StatefulWidget {
 class _MarkdownTextInputState extends State<MarkdownTextInput> {
   final TextEditingController _controller;
   TextSelection textSelection = const TextSelection(baseOffset: 0, extentOffset: 0);
+  FocusNode focusNode = FocusNode();
 
   _MarkdownTextInputState(this._controller);
 
@@ -69,6 +70,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
 
     if (noTextSelected) {
       _controller.selection = TextSelection.collapsed(offset: _controller.selection.end - result.replaceCursorIndex);
+      focusNode.requestFocus();
     }
   }
 
@@ -85,6 +87,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
   @override
   void dispose() {
     _controller.dispose();
+    focusNode.dispose();
     super.dispose();
   }
 
@@ -99,6 +102,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
       child: Column(
         children: <Widget>[
           TextFormField(
+            focusNode: focusNode,
             textInputAction: TextInputAction.newline,
             maxLines: widget.maxLines,
             controller: _controller,
