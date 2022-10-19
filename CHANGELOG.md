@@ -1,6 +1,7 @@
 ## [2.0.3] - 2022/10/19
 
 * Add a node to request focus and get back to field on any action click.
+* Add possibility to pass validator as null.
 
 ## [2.0.2] - 2021/10/26
 

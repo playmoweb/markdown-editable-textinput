@@ -107,7 +107,9 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
             maxLines: widget.maxLines,
             controller: _controller,
             textCapitalization: TextCapitalization.sentences,
-            validator: (value) => widget.validators!(value),
+            validator: widget.validators != null
+                ? (value) => widget.validators!(value)
+                : null,
             cursorColor: Theme.of(context).primaryColor,
             textDirection: widget.textDirection,
             decoration: InputDecoration(
