@@ -123,7 +123,6 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
             validator: widget.validators != null
                 ? (value) => widget.validators!(value)
                 : null,
-            cursorColor: Theme.of(context).primaryColor,
             textDirection: widget.textDirection,
             decoration: InputDecoration(
               enabledBorder: UnderlineInputBorder(
