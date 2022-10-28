@@ -28,6 +28,9 @@ class MarkdownTextInput extends StatefulWidget {
   /// Optional controller to manage the input
   final TextEditingController? controller;
 
+  /// The style for the TextFormField
+  final TextStyle? inputStyle;
+
   /// Constructor for [MarkdownTextInput]
   MarkdownTextInput(
     this.onTextChanged,
@@ -44,6 +47,7 @@ class MarkdownTextInput extends StatefulWidget {
       MarkdownType.list
     ],
     this.controller,
+    this.inputStyle,
   });
 
   @override
@@ -107,10 +111,8 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
             maxLines: widget.maxLines,
             controller: _controller,
             textCapitalization: TextCapitalization.sentences,
-            validator: widget.validators != null
-                ? (value) => widget.validators!(value)
-                : null,
-            style: Theme.of(context).textTheme.bodyText1,
+            validator: widget.validators != null ? (value) => widget.validators!(value) : null,
+            style: widget.inputStyle ?? Theme.of(context).textTheme.bodyText1,
             cursorColor: Theme.of(context).primaryColor,
             textDirection: widget.textDirection,
             decoration: InputDecoration(
