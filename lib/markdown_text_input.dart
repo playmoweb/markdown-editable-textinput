@@ -1,6 +1,6 @@
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:markdown_editable_textinput/format_markdown.dart';
-import 'package:expandable/expandable.dart';
 
 /// Widget with markdown buttons
 class MarkdownTextInput extends StatefulWidget {
@@ -53,6 +53,7 @@ class MarkdownTextInput extends StatefulWidget {
 class _MarkdownTextInputState extends State<MarkdownTextInput> {
   final TextEditingController _controller;
   TextSelection textSelection = const TextSelection(baseOffset: 0, extentOffset: 0);
+  FocusNode focusNode = FocusNode();
 
   _MarkdownTextInputState(this._controller);
 
@@ -69,6 +70,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
 
     if (noTextSelected) {
       _controller.selection = TextSelection.collapsed(offset: _controller.selection.end - result.replaceCursorIndex);
+      focusNode.requestFocus();
     }
   }
 
@@ -85,6 +87,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
   @override
   void dispose() {
     if (widget.controller == null) _controller.dispose();
+    focusNode.dispose();
     super.dispose();
   }
 
@@ -99,11 +102,14 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
       child: Column(
         children: <Widget>[
           TextFormField(
+            focusNode: focusNode,
             textInputAction: TextInputAction.newline,
             maxLines: widget.maxLines,
             controller: _controller,
             textCapitalization: TextCapitalization.sentences,
-            validator: (value) => widget.validators!(value),
+            validator: widget.validators != null
+                ? (value) => widget.validators!(value)
+                : null,
             cursorColor: Theme.of(context).primaryColor,
             textDirection: widget.textDirection,
             decoration: InputDecoration(

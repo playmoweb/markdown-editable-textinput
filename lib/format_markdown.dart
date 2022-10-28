@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 
 /// Use this class for converting String to [ResultMarkdown]
@@ -9,6 +10,12 @@ class FormatMarkdown {
       {int titleSize = 1}) {
     late String changedData;
     late int replaceCursorIndex;
+
+    final lesserIndex = min(fromIndex, toIndex);
+    final greaterIndex = max(fromIndex, toIndex);
+
+    fromIndex = lesserIndex;
+    toIndex = greaterIndex;
 
     switch (type) {
       case MarkdownType.bold:
