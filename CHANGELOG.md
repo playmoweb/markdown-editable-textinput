@@ -1,3 +1,10 @@
+## [2.0.4] - 2022/10/28
+
+* Do not dispose controller when it is passed as an argument
+* Fix RTL selection
+* Update library dependencies
+* Bind textStyle of the TextField to the bodyText1 ThemeData
+
 ## [2.0.3] - 2022/10/19
 
 * Add a node to request focus and get back to field on any action click.
