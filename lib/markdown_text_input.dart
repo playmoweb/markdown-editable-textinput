@@ -86,7 +86,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    if (widget.controller == null) _controller.dispose();
     focusNode.dispose();
     super.dispose();
   }
