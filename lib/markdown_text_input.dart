@@ -17,7 +17,7 @@ class MarkdownTextInput extends StatefulWidget {
   final String? label;
 
   /// Change the text direction of the input (RTL / LTR)
-  final TextDirection? textDirection;
+  final TextDirection textDirection;
 
   /// The maximum of lines that can be display in the input
   final int? maxLines;
@@ -25,7 +25,7 @@ class MarkdownTextInput extends StatefulWidget {
   /// List of action the component can handle
   final List<MarkdownType> actions;
 
-  /// Optionnal controller to manage the input
+  /// Optional controller to manage the input
   final TextEditingController? controller;
 
   /// Constructor for [MarkdownTextInput]
@@ -110,6 +110,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
             validator: widget.validators != null
                 ? (value) => widget.validators!(value)
                 : null,
+            style: Theme.of(context).textTheme.bodyText1,
             cursorColor: Theme.of(context).primaryColor,
             textDirection: widget.textDirection,
             decoration: InputDecoration(
