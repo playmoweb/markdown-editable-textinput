@@ -1,3 +1,7 @@
+## [2.1.0] - 2022/11/17
+
+* Add textStyle property
+
 ## [2.0.4] - 2022/10/28
 
 * Do not dispose controller when it is passed as an argument
