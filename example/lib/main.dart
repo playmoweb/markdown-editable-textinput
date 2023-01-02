@@ -56,6 +56,7 @@ class _MyAppState extends State<MyApp> {
                           maxLines: 10,
                           actions: MarkdownType.values,
                           controller: controller,
+                          textStyle: TextStyle(fontSize: 16),
                         ),
                         TextButton(
                           onPressed: () {
