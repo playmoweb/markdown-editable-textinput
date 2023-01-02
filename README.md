@@ -15,6 +15,9 @@ MarkdownEditableTextInput is a TextField Widget that allow you to convert easily
 ## Demo
 ![](pictures/test_edition.gif)
 
+### Link demo
+![](pictures/link_demo.gif)
+
 ## Usage
 The color of the MarkdownTextInput is defined by the color set in your Theme :
 - primaryColor: Cursor's color
@@ -22,17 +25,17 @@ The color of the MarkdownTextInput is defined by the color set in your Theme :
 - cardColor: Background color of MarkdownTextInput
 
 ### Attributes
-|      Attributes     | Example Value |                  Description                            |
-|:-------------------:|:-------------:|:-------------------------------------------------------:|
-| Function onTextChanged   |               | Callback used to retrieve the text in parent's Widget   |
-| String initialValue | "Lorem Ipsum" | Display an initial value in MarkdownTextInput's field   |
-| Function validators |               | Add validators to the MarkdownTextInput                 |
-| String label        | "Description" | Display a label in MarkdownTextInput                    |
-| TextDirection textDirection       | TextDirection.rtl | Change text direction                   |
-| int maxLines       | 3 | The maximum of lines that can be display in the input                |
-| List<MarkdownType> actions       | [MarkdownType.bold, MardownType.italic] | Actions the editor will handle               |
-| TextEditingController controller       | TextEditingController() | Pass your own controller. Can be used to clear the input for example            |
-| TextStyle textStyle      | Theme.of(context).textTheme.bodyText2 | Overrides input text style |
+|            Attributes            |              Example Value              |                             Description                              |
+|:--------------------------------:|:---------------------------------------:|:--------------------------------------------------------------------:|
+|      Function onTextChanged      |                                         |        Callback used to retrieve the text in parent's Widget         |
+|       String initialValue        |              "Lorem Ipsum"              |        Display an initial value in MarkdownTextInput's field         |
+|       Function validators        |                                         |               Add validators to the MarkdownTextInput                |
+|           String label           |              "Description"              |                 Display a label in MarkdownTextInput                 |
+|   TextDirection textDirection    |            TextDirection.rtl            |                        Change text direction                         |
+|           int maxLines           |                    3                    |        The maximum of lines that can be display in the input         |
+|    List<MarkdownType> actions    | [MarkdownType.bold, MardownType.italic] |                    Actions the editor will handle                    |
+| TextEditingController controller |         TextEditingController()         | Pass your own controller. Can be used to clear the input for example |
+|       TextStyle textStyle        |  Theme.of(context).textTheme.bodyText2  |                      Overrides input text style                      |
 
 ### Example
 You can see an example of how to use this package [here](https://github.com/playmoweb/markdown-editable-textinput/tree/master/example)
