@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:expandable/expandable.dart';
-import 'package:translator/translator.dart';
 import 'package:flutter/material.dart';
 import 'package:markdown_editable_textinput/format_markdown.dart';
+import 'package:translator/translator.dart';
 
 /// Widget with markdown buttons
 class MarkdownTextInput extends StatefulWidget {
@@ -34,6 +34,10 @@ class MarkdownTextInput extends StatefulWidget {
   /// Overrides input text style
   final TextStyle? textStyle;
 
+  /// If you prefer to use the dialog to insert links, you can choose to use the markdown syntax directly by setting [insertLinksByDialog] to false. In this case, the selected text will be used as label and link.
+  /// Default value is true.
+  final bool insertLinksByDialog;
+
   /// Constructor for [MarkdownTextInput]
   MarkdownTextInput(
     this.onTextChanged,
@@ -45,6 +49,7 @@ class MarkdownTextInput extends StatefulWidget {
     this.actions = const [MarkdownType.bold, MarkdownType.italic, MarkdownType.title, MarkdownType.link, MarkdownType.list],
     this.textStyle,
     this.controller,
+    this.insertLinksByDialog = true,
   });
 
   @override
@@ -171,71 +176,73 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                         ),
                       );
                     case MarkdownType.link:
-                      return InkWell(
-                        key: Key(type.key),
-                        onTap: () async {
-                          var linkController = TextEditingController();
-                          var text = _controller.text.substring(textSelection.baseOffset, textSelection.extentOffset);
-                          var color = Theme.of(context).colorScheme.secondary;
+                      return _basicInkwell(
+                        type,
+                        customOnTap: !widget.insertLinksByDialog
+                            ? null
+                            : () async {
+                                var linkController = TextEditingController();
+                                var text = _controller.text.substring(textSelection.baseOffset, textSelection.extentOffset);
+                                var color = Theme.of(context).colorScheme.secondary;
 
-                          var label = 'Link';
-                          try {
-                            var translation = await GoogleTranslator().translate(label, to: Platform.localeName.substring(0, 2));
-                            label = translation.text;
-                          } catch (e) {
-                            label = 'Link';
-                          }
+                                var label = 'Link';
+                                try {
+                                  var translation = await GoogleTranslator().translate(label, to: Platform.localeName.substring(0, 2));
+                                  label = translation.text;
+                                } catch (e) {
+                                  label = 'Link';
+                                }
 
-                          if (text.isNotEmpty)
-                            await showDialog<void>(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: Text(text),
-                                    content: TextField(
-                                      controller: linkController,
-                                      decoration: InputDecoration(
-                                        hintText: 'https://example.com',
-                                        label: Text(label),
-                                        labelStyle: TextStyle(color: color),
-                                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
-                                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
-                                      ),
-                                      autofocus: true,
-                                    ),
-                                    contentPadding: EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 0),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          onTap(type, link: linkController.text);
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text('OK'),
-                                      ),
-                                    ],
-                                  );
-                                });
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Icon(type.icon),
-                        ),
+                                if (text.isNotEmpty)
+                                  await showDialog<void>(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: Text(text),
+                                          content: TextField(
+                                            controller: linkController,
+                                            decoration: InputDecoration(
+                                              hintText: 'https://example.com',
+                                              label: Text(label),
+                                              labelStyle: TextStyle(color: color),
+                                              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
+                                              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
+                                            ),
+                                            autofocus: true,
+                                          ),
+                                          contentPadding: EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 0),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                onTap(type, link: linkController.text);
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text('OK'),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                              },
                       );
                     default:
-                      return InkWell(
-                        key: Key(type.key),
-                        onTap: () => onTap(type),
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Icon(type.icon),
-                        ),
-                      );
+                      return _basicInkwell(type);
                   }
                 }).toList(),
               ),
             ),
           )
         ],
+      ),
+    );
+  }
+
+  Widget _basicInkwell(MarkdownType type, {Function? customOnTap}) {
+    return InkWell(
+      key: Key(type.key),
+      onTap: () => customOnTap != null ? customOnTap() : onTap(type),
+      child: Padding(
+        padding: EdgeInsets.all(10),
+        child: Icon(type.icon),
       ),
     );
   }
