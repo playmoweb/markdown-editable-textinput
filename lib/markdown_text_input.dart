@@ -46,7 +46,13 @@ class MarkdownTextInput extends StatefulWidget {
     this.validators,
     this.textDirection = TextDirection.ltr,
     this.maxLines = 10,
-    this.actions = const [MarkdownType.bold, MarkdownType.italic, MarkdownType.title, MarkdownType.link, MarkdownType.list],
+    this.actions = const [
+      MarkdownType.bold,
+      MarkdownType.italic,
+      MarkdownType.title,
+      MarkdownType.link,
+      MarkdownType.list
+    ],
     this.textStyle,
     this.controller,
     this.insertLinksByDialog = true,
@@ -67,9 +73,12 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
     final basePosition = textSelection.baseOffset;
     var noTextSelected = (textSelection.baseOffset - textSelection.extentOffset) == 0;
 
-    final result = FormatMarkdown.convertToMarkdown(type, _controller.text, textSelection.baseOffset, textSelection.extentOffset, titleSize: titleSize, link: link, selectedText: selectedText);
+    final result = FormatMarkdown.convertToMarkdown(
+        type, _controller.text, textSelection.baseOffset, textSelection.extentOffset,
+        titleSize: titleSize, link: link, selectedText: selectedText);
 
-    _controller.value = _controller.value.copyWith(text: result.data, selection: TextSelection.collapsed(offset: basePosition + result.cursorIndex));
+    _controller.value = _controller.value
+        .copyWith(text: result.data, selection: TextSelection.collapsed(offset: basePosition + result.cursorIndex));
 
     if (noTextSelected) {
       _controller.selection = TextSelection.collapsed(offset: _controller.selection.end - result.replaceCursorIndex);
@@ -115,8 +124,10 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
             cursorColor: Theme.of(context).primaryColor,
             textDirection: widget.textDirection,
             decoration: InputDecoration(
-              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary)),
-              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary)),
+              enabledBorder:
+                  UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary)),
+              focusedBorder:
+                  UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary)),
               hintText: widget.label,
               hintStyle: const TextStyle(color: Color.fromRGBO(63, 61, 86, 0.5)),
               contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
@@ -181,7 +192,8 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                         customOnTap: !widget.insertLinksByDialog
                             ? null
                             : () async {
-                                var text = _controller.text.substring(textSelection.baseOffset, textSelection.extentOffset);
+                                var text =
+                                    _controller.text.substring(textSelection.baseOffset, textSelection.extentOffset);
 
                                 var textController = TextEditingController()..text = text;
                                 var linkController = TextEditingController();
@@ -210,7 +222,10 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                                       return AlertDialog(
                                         title: Row(
                                           mainAxisAlignment: MainAxisAlignment.end,
-                                          children: [GestureDetector(child: Icon(Icons.close), onTap: () => Navigator.pop(context))],
+                                          children: [
+                                            GestureDetector(
+                                                child: Icon(Icons.close), onTap: () => Navigator.pop(context))
+                                          ],
                                         ),
                                         content: Column(
                                           mainAxisSize: MainAxisSize.min,
@@ -221,8 +236,10 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                                                 hintText: 'example',
                                                 label: Text(textLabel),
                                                 labelStyle: TextStyle(color: color),
-                                                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
-                                                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
+                                                focusedBorder:
+                                                    OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
+                                                enabledBorder:
+                                                    OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
                                               ),
                                               autofocus: text.isEmpty,
                                               focusNode: textFocus,
@@ -239,8 +256,10 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                                                 hintText: 'https://example.com',
                                                 label: Text(linkLabel),
                                                 labelStyle: TextStyle(color: color),
-                                                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
-                                                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
+                                                focusedBorder:
+                                                    OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
+                                                enabledBorder:
+                                                    OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
                                               ),
                                               autofocus: text.isNotEmpty,
                                               focusNode: linkFocus,
