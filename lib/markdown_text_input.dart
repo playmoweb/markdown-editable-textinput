@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:expandable/expandable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:markdown_editable_textinput/format_markdown.dart';
 import 'package:translator/translator.dart';
@@ -203,7 +205,8 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                                 var linkFocus = FocusNode();
 
                                 var color = Theme.of(context).colorScheme.secondary;
-                                var language = Platform.localeName.substring(0, 2);
+                                var language =
+                                    kIsWeb ? window.locale.languageCode : Platform.localeName.substring(0, 2);
 
                                 var textLabel = 'Text';
                                 var linkLabel = 'Link';
