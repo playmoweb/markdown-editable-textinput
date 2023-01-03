@@ -1,3 +1,8 @@
+## [2.2.0] - 2023/01/02
+
+* Change the way of adding links to the input. Now, you need to select the text you want to be the label, then click the link button. 
+A dialog will show where you can enter the link.
+
 ## [2.1.0] - 2022/11/17
 
 * Add textStyle property
