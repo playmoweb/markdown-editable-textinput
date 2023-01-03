@@ -32,7 +32,7 @@ class FormatMarkdown {
         replaceCursorIndex = 2;
         break;
       case MarkdownType.link:
-        changedData = '[$selectedText](${link ?? data.substring(fromIndex, toIndex)})';
+        changedData = '[$selectedText](${link ?? selectedText})';
         replaceCursorIndex = 0;
         break;
       case MarkdownType.title:

@@ -232,10 +232,23 @@ void main() {
       var from = 12;
       var to = 17;
 
-      var formattedText = FormatMarkdown.convertToMarkdown(MarkdownType.link, testString, from, to);
+      var formattedText =
+          FormatMarkdown.convertToMarkdown(MarkdownType.link, testString, from, to, selectedText: 'dolor');
 
       expect(formattedText.data, 'Lorem ipsum [dolor](dolor) sit amet consectetur adipiscing elit.');
-      expect(formattedText.cursorIndex, 14, reason: "dolor length = 5, '[](dolor)'= 9");
+      expect(formattedText.cursorIndex, 14, reason: "dolor length = 5, '[dolor](dolor)'= 14");
+    });
+
+    test('convert to Link by dialog', () {
+      var testString = 'Lorem ipsum dolor sit amet consectetur adipiscing elit.';
+      var from = 12;
+      var to = 17;
+
+      var formattedText = FormatMarkdown.convertToMarkdown(MarkdownType.link, testString, from, to,
+          link: 'example.com', selectedText: 'dolor');
+
+      expect(formattedText.data, 'Lorem ipsum [dolor](example.com) sit amet consectetur adipiscing elit.');
+      expect(formattedText.cursorIndex, 20, reason: "dolor length = 5, '[](dolor)'= 9");
     });
 
     test('convert to Link from right to left', () {
@@ -243,7 +256,8 @@ void main() {
       var from = 17;
       var to = 12;
 
-      var formattedText = FormatMarkdown.convertToMarkdown(MarkdownType.link, testString, from, to);
+      var formattedText =
+          FormatMarkdown.convertToMarkdown(MarkdownType.link, testString, from, to, selectedText: 'dolor');
 
       expect(formattedText.data, 'Lorem ipsum [dolor](dolor) sit amet consectetur adipiscing elit.');
       expect(formattedText.cursorIndex, 14, reason: "dolor length = 5, '[](dolor)'= 9");

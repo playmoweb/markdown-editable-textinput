@@ -69,13 +69,15 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
 
   _MarkdownTextInputState(this._controller);
 
-  void onTap(MarkdownType type, {int titleSize = 1, String? link, String selectedText = ''}) {
+  void onTap(MarkdownType type, {int titleSize = 1, String? link, String? selectedText}) {
     final basePosition = textSelection.baseOffset;
     var noTextSelected = (textSelection.baseOffset - textSelection.extentOffset) == 0;
 
-    final result = FormatMarkdown.convertToMarkdown(
-        type, _controller.text, textSelection.baseOffset, textSelection.extentOffset,
-        titleSize: titleSize, link: link, selectedText: selectedText);
+    var fromIndex = textSelection.baseOffset;
+    var toIndex = textSelection.extentOffset;
+
+    final result = FormatMarkdown.convertToMarkdown(type, _controller.text, fromIndex, toIndex,
+        titleSize: titleSize, link: link, selectedText: selectedText ?? _controller.text.substring(fromIndex, toIndex));
 
     _controller.value = _controller.value
         .copyWith(text: result.data, selection: TextSelection.collapsed(offset: basePosition + result.cursorIndex));
