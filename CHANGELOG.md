@@ -1,4 +1,4 @@
-## [3.0.0] - 2023/01/02
+## [2.2.0] - 2023/01/02
 
 * Change the way of adding links to the input. Now, you need to select the text you want to be the label, then click the link button. 
 A dialog will show where you can enter the link.
