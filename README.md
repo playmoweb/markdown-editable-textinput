@@ -11,6 +11,8 @@ MarkdownEditableTextInput is a TextField Widget that allow you to convert easily
 - [x] Convert to Code, Quote, Links
 - [x] Convert to Heading (H1, H2, H3, H4, H5, H6) and Links
 - [x] Support text direction
+- [x] Dialog mode to enter link and picture
+- [x] Possibility to add custom buttons to the action bar
 
 ## Demo
 ![](pictures/test_edition.gif)

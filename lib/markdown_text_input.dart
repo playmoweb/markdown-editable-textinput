@@ -29,6 +29,7 @@ class MarkdownTextInput extends StatefulWidget {
   /// List of action the component can handle
   final List<MarkdownType> actions;
 
+  /// List of custom action buttons
   final List<ActionButton> optionnalActionButtons;
 
   /// Optional controller to manage the input
@@ -257,7 +258,6 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
       );
     } else if (item is ActionButton) {
       return InkWell(
-        key: item.key,
         onTap: item.action,
         child: Padding(
           padding: EdgeInsets.all(10),

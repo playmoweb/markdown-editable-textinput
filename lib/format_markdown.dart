@@ -132,14 +132,15 @@ enum MarkdownType {
   image,
 }
 
+/// Custom button object
 class ActionButton {
+  /// [widget] is the icon in the action bar
   final Widget widget;
-  final String title;
+  /// Action to perform when button is pressed
   final Function() action;
-  final List<ActionButton> children;
-  final Key key;
 
-  ActionButton(this.key, {required this.widget, required this.action, this.children = const [], this.title = ""});
+  /// return [ActionButton]
+  ActionButton({required this.widget, required this.action});
 }
 
 /// Add data to [MarkdownType] enum
