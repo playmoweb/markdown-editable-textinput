@@ -39,11 +39,27 @@ class MarkdownTextInput extends StatefulWidget {
   /// Default value is true.
   final bool insertLinksByDialog;
 
+  /// If you prefer to use the dialog to insert image, you can choose to use the markdown syntax directly by setting [insertImageByDialog] to false. In this case, the selected text will be used as label and link.
+  /// Default value is true.
+  final bool insertImageByDialog;
+
   /// InputDecoration for the text input of the link dialog
   final InputDecoration? linkDialogLinkDecoration;
 
   /// InputDecoration for the link input of the link dialog
   final InputDecoration? linkDialogTextDecoration;
+
+  /// InputDecoration for the text input of the image dialog
+  final InputDecoration? imageDialogLinkDecoration;
+
+  /// InputDecoration for the link input of the image dialog
+  final InputDecoration? imageDialogTextDecoration;
+
+  /// Custom text for cancel button in dialogs
+  final String? customCancelDialogText;
+
+  /// Custom text for submit button in dialogs
+  final String? customSubmitDialogText;
 
   /// Constructor for [MarkdownTextInput]
   MarkdownTextInput(
@@ -63,8 +79,13 @@ class MarkdownTextInput extends StatefulWidget {
     this.textStyle,
     this.controller,
     this.insertLinksByDialog = true,
+    this.insertImageByDialog = true,
     this.linkDialogLinkDecoration,
     this.linkDialogTextDecoration,
+    this.imageDialogLinkDecoration,
+    this.imageDialogTextDecoration,
+    this.customCancelDialogText,
+    this.customSubmitDialogText
   });
 
   @override
@@ -245,6 +266,28 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                                 await _basicDialog(textController, linkController, color, text, textFocus, linkFocus, type);
                               },
                       );
+                    case MarkdownType.image:
+                      return _basicInkwell(
+                        type,
+                        customOnTap: !widget.insertImageByDialog
+                            ? null
+                            : () async {
+                          var text = _controller.text.substring(
+                              textSelection.baseOffset,
+                              textSelection.extentOffset);
+
+                          var textController = TextEditingController()
+                            ..text = text;
+                          var linkController = TextEditingController();
+                          var textFocus = FocusNode();
+                          var linkFocus = FocusNode();
+
+                          var color =
+                              Theme.of(context).colorScheme.secondary;
+
+                          await _basicDialog(textController, linkController, color, text, textFocus, linkFocus, type);
+                        },
+                      );
                     default:
                       return _basicInkwell(type);
                   }
@@ -275,7 +318,11 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
       String text,
       FocusNode textFocus,
       FocusNode linkFocus,
-      MarkdownType type) async {
+      MarkdownType type,
+      ) async {
+    var finalTextInputDecoration = type == MarkdownType.link ? widget.linkDialogTextDecoration : widget.imageDialogTextDecoration;
+    var finalLinkInputDecoration = type == MarkdownType.link ? widget.linkDialogLinkDecoration : widget.imageDialogLinkDecoration;
+
     return await showDialog<void>(
         context: context,
         builder: (context) {
@@ -285,7 +332,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
               children: [
                 TextField(
                   controller: textController,
-                  decoration: widget.linkDialogLinkDecoration ??
+                  decoration: finalTextInputDecoration ??
                       InputDecoration(
                         hintText: 'Example text',
                         label: Text('Text'),
@@ -306,10 +353,10 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                 SizedBox(height: 10),
                 TextField(
                   controller: linkController,
-                  decoration: widget.linkDialogTextDecoration ??
+                  decoration: finalLinkInputDecoration ??
                       InputDecoration(
                         hintText: 'https://example.com',
-                        label: Text("Link"),
+                        label: Text('Link'),
                         labelStyle: TextStyle(color: color),
                         focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: color, width: 2)),
@@ -327,7 +374,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text('Annuler'),
+                child: Text(widget.customCancelDialogText ?? 'Annuler'),
               ),
               TextButton(
                 onPressed: () {
@@ -336,7 +383,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                       selectedText: textController.text);
                   Navigator.pop(context);
                 },
-                child: const Text('OK'),
+                child: Text(widget.customSubmitDialogText ??'OK'),
               ),
             ],
           );
