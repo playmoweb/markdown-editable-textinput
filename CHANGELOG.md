@@ -7,6 +7,10 @@ A dialog will show where you can enter the link.
 
 * Add textStyle property
 
+## [2.0.5] - 2023/03/24
+
+* Remove Google dependency
+
 ## [2.0.4] - 2022/10/28
 
 * Do not dispose controller when it is passed as an argument
