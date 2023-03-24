@@ -296,10 +296,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                 }).toList(),
 
                 ...widget.optionnalActionButtons.map((ActionButton optionActionButton) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: InkWell(child: optionActionButton.widget, onTap: optionActionButton.action),
-                  );
+                  return _basicInkwell(optionActionButton, customOnTap: optionActionButton.action);
                 }).toList()
             ]
             ),
@@ -309,14 +306,29 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
     );
   }
 
-  Widget _basicInkwell(MarkdownType type, {Function? customOnTap}) {
-    return InkWell(
-      key: Key(type.key),
-      onTap: () => customOnTap != null ? customOnTap() : onTap(type),
-      child: Padding(
-        padding: EdgeInsets.all(10),
-        child: Icon(type.icon),
-      ),
-    );
+  Widget _basicInkwell(dynamic item, {Function? customOnTap}) {
+    Widget widgetToReturn = SizedBox.shrink();
+
+    if (item is MarkdownType) {
+      return InkWell(
+        key: Key(item.key),
+        onTap: () => customOnTap != null ? customOnTap() : onTap(item),
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: Icon(item.icon),
+        ),
+      );
+    } else if (item is ActionButton) {
+      return InkWell(
+        key: item.key,
+        onTap: item.action,
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: item.widget,
+        ),
+      );
+    }
+
+    return widgetToReturn;
   }
 }
