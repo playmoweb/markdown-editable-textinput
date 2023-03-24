@@ -39,11 +39,11 @@ class MarkdownTextInput extends StatefulWidget {
   /// Default value is true.
   final bool insertLinksByDialog;
 
-  /// Label for the text input of the link dialog
-  final InputDecoration dialogTextDecoration;
+  /// InputDecoration for the text input of the link dialog
+  final InputDecoration? linkDialogLinkDecoration;
 
-  /// Label for the link input of the link dialog
-  final String dialogLinkLabel;
+  /// InputDecoration for the link input of the link dialog
+  final InputDecoration? linkDialogTextDecoration;
 
   /// Constructor for [MarkdownTextInput]
   MarkdownTextInput(
@@ -57,8 +57,8 @@ class MarkdownTextInput extends StatefulWidget {
     this.textStyle,
     this.controller,
     this.insertLinksByDialog = true,
-    this.dialogTextDecoration = const InputDecoration(labelText: 'Text'),
-    this.dialogLinkLabel = 'Link',
+    this.linkDialogLinkDecoration,
+    this.linkDialogTextDecoration,
   });
 
   @override
@@ -207,16 +207,20 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                                     context: context,
                                     builder: (context) {
                                       return AlertDialog(
-                                        title: Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: [GestureDetector(child: Icon(Icons.close), onTap: () => Navigator.pop(context))],
-                                        ),
                                         content: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
                                             TextField(
                                               controller: textController,
-                                              decoration: widget.dialogTextDecoration,
+                                              decoration: widget.linkDialogLinkDecoration ?? InputDecoration(
+                                                hintText: 'Example text',
+                                                label: Text('Text'),
+                                                labelStyle: TextStyle(color: color),
+                                                focusedBorder:
+                                                OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
+                                                enabledBorder:
+                                                OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
+                                              ),
                                               autofocus: text.isEmpty,
                                               focusNode: textFocus,
                                               textInputAction: TextInputAction.next,
@@ -228,9 +232,9 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                                             SizedBox(height: 10),
                                             TextField(
                                               controller: linkController,
-                                              decoration: InputDecoration(
+                                              decoration: widget.linkDialogTextDecoration ?? InputDecoration(
                                                 hintText: 'https://example.com',
-                                                label: Text(widget.dialogLinkLabel),
+                                                label: Text("Link"),
                                                 labelStyle: TextStyle(color: color),
                                                 focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
                                                 enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
@@ -240,8 +244,14 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                                             ),
                                           ],
                                         ),
-                                        contentPadding: EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 0),
+                                        contentPadding: EdgeInsets.fromLTRB(24.0, 32.0, 24.0, 12.0),
                                         actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text('Annuler'),
+                                          ),
                                           TextButton(
                                             onPressed: () {
                                               onTap(type, link: linkController.text, selectedText: textController.text);
