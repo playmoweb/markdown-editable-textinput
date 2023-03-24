@@ -39,6 +39,10 @@ The color of the MarkdownTextInput is defined by the color set in your Theme :
 | TextEditingController controller |         TextEditingController()          | Pass your own controller. Can be used to clear the input for example |
 |       TextStyle textStyle        |  Theme.of(context).textTheme.bodyText2   |                      Overrides input text style                      |
 |    bool insertLinksByDialog;     |                   true                   |              Choose to use dialog or not to insert link              |
+|    bool insertImageByDialog;     |                   true                   |            Choose to use dialog or not to insert an image            |
+|    bool insertImageByDialog;     |                   true                   |            Choose to use dialog or not to insert an image            |
+|   bool customCancelDialogText;   |                 String?                  |             Text used by dialog for close dialog action              |
+|   bool customSubmitDialogText;   |                 String?                  |            Text used by dialog for validate dialog action            |
 
 ### Example
 You can see an example of how to use this package [here](https://github.com/playmoweb/markdown-editable-textinput/tree/master/example)
