@@ -29,6 +29,8 @@ class MarkdownTextInput extends StatefulWidget {
   /// List of action the component can handle
   final List<MarkdownType> actions;
 
+  final List<ActionButton> optionnalActionButtons;
+
   /// Optional controller to manage the input
   final TextEditingController? controller;
 
@@ -77,7 +79,8 @@ class MarkdownTextInput extends StatefulWidget {
       this.imageDialogLinkDecoration,
       this.imageDialogTextDecoration,
       this.customCancelDialogText,
-      this.customSubmitDialogText});
+      this.customSubmitDialogText,
+      this.optionnalActionButtons = const []});
 
   @override
   _MarkdownTextInputState createState() => _MarkdownTextInputState(controller ?? TextEditingController());
@@ -160,72 +163,78 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
               borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                children: widget.actions.map((type) {
-                  if (type == MarkdownType.title) {
-                    return ExpandableNotifier(
-                      child: Expandable(
-                        key: Key('H#_button'),
-                        collapsed: ExpandableButton(
-                          child: const Center(
-                            child: Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Text(
-                                'H#',
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                children: <Widget>[
+                  ...widget.actions.map((type) {
+                    if (type == MarkdownType.title) {
+                      return ExpandableNotifier(
+                        child: Expandable(
+                          key: Key('H#_button'),
+                          collapsed: ExpandableButton(
+                            child: const Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  'H#',
+                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        expanded: Container(
-                          color: Colors.white10,
-                          child: Row(
-                            children: [
-                              for (int i = 1; i <= 6; i++)
-                                InkWell(
-                                  key: Key('H${i}_button'),
-                                  onTap: () => onTap(MarkdownType.title, titleSize: i),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: Text(
-                                      'H$i',
-                                      style: TextStyle(fontSize: (18 - i).toDouble(), fontWeight: FontWeight.w700),
+                          expanded: Container(
+                            color: Colors.white10,
+                            child: Row(
+                              children: [
+                                for (int i = 1; i <= 6; i++)
+                                  InkWell(
+                                    key: Key('H${i}_button'),
+                                    onTap: () => onTap(MarkdownType.title, titleSize: i),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: Text(
+                                        'H$i',
+                                        style: TextStyle(fontSize: (18 - i).toDouble(), fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                  ),
+                                ExpandableButton(
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: Icon(
+                                      Icons.close,
                                     ),
                                   ),
                                 ),
-                              ExpandableButton(
-                                child: const Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: Icon(
-                                    Icons.close,
-                                  ),
-                                ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  }
-                  else if (type == MarkdownType.link || type == MarkdownType.image) {
-                    return _basicInkwell(
-                      type,
-                      customOnTap: (type == MarkdownType.link ? !widget.insertLinksByDialog : !widget.insertImageByDialog)
-                          ? null
-                          : () async {
-                              var text = _controller.text.substring(textSelection.baseOffset, textSelection.extentOffset);
+                      );
+                    } else if (type == MarkdownType.link || type == MarkdownType.image) {
+                      return _basicInkwell(
+                        type,
+                        customOnTap: (type == MarkdownType.link ? !widget.insertLinksByDialog : !widget.insertImageByDialog)
+                            ? null
+                            : () async {
+                                var text = _controller.text.substring(textSelection.baseOffset, textSelection.extentOffset);
 
-                              var textController = TextEditingController()..text = text;
-                              var linkController = TextEditingController();
+                                var textController = TextEditingController()..text = text;
+                                var linkController = TextEditingController();
 
-                              var color = Theme.of(context).colorScheme.secondary;
+                                var color = Theme.of(context).colorScheme.secondary;
 
-                              await _basicDialog(textController, linkController, color, text, type);
-                            },
-                    );
-                  } else {
-                    return _basicInkwell(type);
-                  }
-                }).toList(),
+                                await _basicDialog(textController, linkController, color, text, type);
+                              },
+                      );
+                    } else {
+                      return _basicInkwell(type);
+                    }
+                  }).toList(),
+
+
+                  ...widget.optionnalActionButtons.map((ActionButton optionActionButton) {
+                    return _basicInkwell(optionActionButton, customOnTap: optionActionButton.action);
+                  }).toList()
+                ],
               ),
             ),
           )
@@ -234,15 +243,30 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
     );
   }
 
-  Widget _basicInkwell(MarkdownType type, {Function? customOnTap}) {
-    return InkWell(
-      key: Key(type.key),
-      onTap: () => customOnTap != null ? customOnTap() : onTap(type),
-      child: Padding(
-        padding: EdgeInsets.all(10),
-        child: Icon(type.icon),
-      ),
-    );
+  Widget _basicInkwell(dynamic item, {Function? customOnTap}) {
+    Widget widgetToReturn = SizedBox.shrink();
+
+    if (item is MarkdownType) {
+      return InkWell(
+        key: Key(item.key),
+        onTap: () => customOnTap != null ? customOnTap() : onTap(item),
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: Icon(item.icon),
+        ),
+      );
+    } else if (item is ActionButton) {
+      return InkWell(
+        key: item.key,
+        onTap: item.action,
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: item.widget,
+        ),
+      );
+    }
+
+    return widgetToReturn;
   }
 
   Future<void> _basicDialog(
