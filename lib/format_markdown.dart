@@ -132,6 +132,16 @@ enum MarkdownType {
   image,
 }
 
+class ActionButton {
+  final Widget widget;
+  final String title;
+  final Function() action;
+  final List<ActionButton> children;
+  final Key key;
+
+  ActionButton(this.key, {required this.widget, required this.action, this.children = const [], this.title = ""});
+}
+
 /// Add data to [MarkdownType] enum
 extension MarkownTypeExtension on MarkdownType {
   /// Get String used in widget's key

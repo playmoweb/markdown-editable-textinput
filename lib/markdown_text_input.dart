@@ -30,6 +30,8 @@ class MarkdownTextInput extends StatefulWidget {
   /// List of action the component can handle
   final List<MarkdownType> actions;
 
+  final List<ActionButton> optionnalActionButtons;
+
   /// Optional controller to manage the input
   final TextEditingController? controller;
 
@@ -58,6 +60,7 @@ class MarkdownTextInput extends StatefulWidget {
     this.textStyle,
     this.controller,
     this.insertLinksByDialog = true,
+    this.optionnalActionButtons = const []
   });
 
   @override
@@ -144,7 +147,9 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
               borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                children: widget.actions.map((type) {
+                children: <Widget>[
+
+                  ...widget.actions.map((type) {
                   switch (type) {
                     case MarkdownType.title:
                       return ExpandableNotifier(
@@ -289,10 +294,17 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                       return _basicInkwell(type);
                   }
                 }).toList(),
-              ),
+
+                ...widget.optionnalActionButtons.map((ActionButton optionActionButton) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InkWell(child: optionActionButton.widget, onTap: optionActionButton.action),
+                  );
+                }).toList()
+            ]
             ),
           )
-        ],
+          )],
       ),
     );
   }
