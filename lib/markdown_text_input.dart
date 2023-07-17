@@ -109,6 +109,25 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
 
   @override
   Widget build(BuildContext context) {
+    var textFormField = TextFormField(
+      focusNode: focusNode,
+      textInputAction: TextInputAction.newline,
+      maxLines: widget.maxLines,
+      expands: widget.maxLines == null,
+      controller: _controller,
+      textCapitalization: TextCapitalization.sentences,
+      validator: widget.validators != null ? (value) => widget.validators!(value) : null,
+      style: widget.textStyle ?? Theme.of(context).textTheme.bodyText1,
+      cursorColor: Theme.of(context).primaryColor,
+      textDirection: widget.textDirection,
+      decoration: InputDecoration(
+        enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary)),
+        focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary)),
+        hintText: widget.label,
+        hintStyle: const TextStyle(color: Color.fromRGBO(63, 61, 86, 0.5)),
+        contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+      ),
+    );
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
@@ -117,26 +136,11 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
       ),
       child: Column(
         children: <Widget>[
-          TextFormField(
-            focusNode: focusNode,
-            textInputAction: TextInputAction.newline,
-            maxLines: widget.maxLines,
-            controller: _controller,
-            textCapitalization: TextCapitalization.sentences,
-            validator: widget.validators != null ? (value) => widget.validators!(value) : null,
-            style: widget.textStyle ?? Theme.of(context).textTheme.bodyText1,
-            cursorColor: Theme.of(context).primaryColor,
-            textDirection: widget.textDirection,
-            decoration: InputDecoration(
-              enabledBorder:
-                  UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary)),
-              focusedBorder:
-                  UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary)),
-              hintText: widget.label,
-              hintStyle: const TextStyle(color: Color.fromRGBO(63, 61, 86, 0.5)),
-              contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+          if (widget.maxLines == null)
+            Expanded(
+              child: textFormField,
             ),
-          ),
+          if (widget.maxLines != null) textFormField,
           SizedBox(
             height: 44,
             child: Material(
