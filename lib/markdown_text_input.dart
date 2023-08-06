@@ -40,6 +40,10 @@ class MarkdownTextInput extends StatefulWidget {
   /// Default value is true.
   final bool insertLinksByDialog;
 
+  ///Optional focusNode, the Widget creates it's own if not provided
+  final FocusNode focusNode;
+
+
   /// Constructor for [MarkdownTextInput]
   MarkdownTextInput(
     this.onTextChanged,
@@ -58,6 +62,7 @@ class MarkdownTextInput extends StatefulWidget {
     this.textStyle,
     this.controller,
     this.insertLinksByDialog = true,
+    this.focusNode = FocusNode()
   });
 
   @override
@@ -67,7 +72,7 @@ class MarkdownTextInput extends StatefulWidget {
 class _MarkdownTextInputState extends State<MarkdownTextInput> {
   final TextEditingController _controller;
   TextSelection textSelection = const TextSelection(baseOffset: 0, extentOffset: 0);
-  FocusNode focusNode = FocusNode();
+  final focusNode = widget.focusNode;
 
   _MarkdownTextInputState(this._controller);
 
