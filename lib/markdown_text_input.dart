@@ -41,7 +41,7 @@ class MarkdownTextInput extends StatefulWidget {
   final bool insertLinksByDialog;
 
   ///Optional focusNode, the Widget creates it's own if not provided
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
 
 
   /// Constructor for [MarkdownTextInput]
@@ -62,7 +62,7 @@ class MarkdownTextInput extends StatefulWidget {
     this.textStyle,
     this.controller,
     this.insertLinksByDialog = true,
-    this.focusNode = FocusNode()
+    this.focusNode
   });
 
   @override
@@ -72,7 +72,7 @@ class MarkdownTextInput extends StatefulWidget {
 class _MarkdownTextInputState extends State<MarkdownTextInput> {
   final TextEditingController _controller;
   TextSelection textSelection = const TextSelection(baseOffset: 0, extentOffset: 0);
-  final focusNode = widget.focusNode;
+  late final FocusNode focusNode;
 
   _MarkdownTextInputState(this._controller);
 
@@ -97,6 +97,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
 
   @override
   void initState() {
+    focusNode = widget.focusNode ?? FocusNode();
     _controller.text = widget.initialValue;
     _controller.addListener(() {
       if (_controller.selection.baseOffset != -1) textSelection = _controller.selection;
@@ -108,7 +109,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
   @override
   void dispose() {
     if (widget.controller == null) _controller.dispose();
-    focusNode.dispose();
+    if (widget.focusNode == null) focusNode.dispose();
     super.dispose();
   }
 
