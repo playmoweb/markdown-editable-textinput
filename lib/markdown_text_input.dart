@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:expandable/expandable.dart';
@@ -75,8 +76,8 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
     final basePosition = textSelection.baseOffset;
     var noTextSelected = (textSelection.baseOffset - textSelection.extentOffset) == 0;
 
-    var fromIndex = textSelection.baseOffset;
-    var toIndex = textSelection.extentOffset;
+    var fromIndex = min(textSelection.baseOffset, textSelection.extentOffset);
+    var toIndex = max(textSelection.extentOffset, textSelection.baseOffset);
 
     final result = FormatMarkdown.convertToMarkdown(type, _controller.text, fromIndex, toIndex,
         titleSize: titleSize, link: link, selectedText: selectedText ?? _controller.text.substring(fromIndex, toIndex));
