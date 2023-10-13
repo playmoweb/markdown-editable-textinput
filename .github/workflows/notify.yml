@@ -6,24 +6,23 @@ on:
     types: [opened]
 
 jobs:
-  integration_test_incoming_webhook:
+  new_push_job:
     runs-on: ubuntu-latest
+    name: New push to repo
     steps:
-    - uses: actions/checkout@v4
-    - run: echo "${{ github.event_name }}"
     - name: Notify slack on pull request
       if: ${{ github.event_name == 'pull_request' }}
-      id: slackIncomingPR
-      uses: ./
+      id: slack
+      uses: slackapi/slack-github-action@v1.24.0
       with:
         payload: "{\"text\":\"New pull request on repository ${{ github.repository }}: ${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.number }}\"}"
       env:
         SLACK_WEBHOOK_URL: ${{ vars.SLACK_INCOMING_WEBHOOK_URL }}
         SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
     - name: Notify slack on issue
-      if: ${{ github.event_name == 'issues' }}
-      id: slackIncomingIssue
-      uses: ./
+      if: ${{ github.event_name == 'pull_request' }}
+      id: slack
+      uses: slackapi/slack-github-action@v1.24.0
       with:
         payload: "{\"text\":\"New issue on repository ${{ github.repository }}: ${{ github.server_url }}/${{ github.repository }}/issues/${{ github.event.number }}\"}"
       env:
