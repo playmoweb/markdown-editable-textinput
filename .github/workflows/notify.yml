@@ -16,7 +16,8 @@ jobs:
       if: ${{ github.event_name == 'pull_request' }}
       id: slackIncoming
       uses: ./
-      payload: "{\"text\":\"New pull request on repository ${{ github.repository }}: ${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.number }}\"}"
+      with:
+        payload: "{\"text\":\"New pull request on repository ${{ github.repository }}: ${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.number }}\"}"
       env:
         SLACK_WEBHOOK_URL: ${{ vars.SLACK_INCOMING_WEBHOOK_URL }}
         SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
@@ -24,7 +25,8 @@ jobs:
       if: ${{ github.event_name == 'issues' }}
       id: slackIncoming
       uses: ./
-      payload: "{\"text\":\"New issue on repository ${{ github.repository }}: ${{ github.server_url }}/${{ github.repository }}/issues/${{ github.event.number }}\"}"
+      with:
+        payload: "{\"text\":\"New issue on repository ${{ github.repository }}: ${{ github.server_url }}/${{ github.repository }}/issues/${{ github.event.number }}\"}"
       env:
         SLACK_WEBHOOK_URL: ${{ vars.SLACK_INCOMING_WEBHOOK_URL }}
         SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
