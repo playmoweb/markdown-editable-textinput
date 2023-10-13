@@ -20,7 +20,7 @@ jobs:
         SLACK_WEBHOOK_URL: ${{ vars.SLACK_INCOMING_WEBHOOK_URL }}
         SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
     - name: Notify slack on issue
-      if: ${{ github.event_name == 'pull_request' }}
+      if: ${{ github.event_name == 'issues' }}
       id: slack-issue
       uses: slackapi/slack-github-action@v1.24.0
       with:
