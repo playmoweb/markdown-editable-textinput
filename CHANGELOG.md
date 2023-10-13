@@ -1,3 +1,9 @@
+## [2.3.0] - 2023/03/24
+
+* Add support for custom action buttons
+* Add dialog mode on pictures
+* Remove Google dependency
+
 ## [2.2.0] - 2023/01/02
 
 * Change the way of adding links to the input. Now, you need to select the text you want to be the label, then click the link button. 

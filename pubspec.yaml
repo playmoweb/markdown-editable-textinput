@@ -1,6 +1,6 @@
 name: markdown_editable_textinput
 description: A TextField Widget that allow you to convert easily what's in the TextField to Markdown.
-version: 2.2.0
+version: 2.3.0
 homepage: https://github.com/playmoweb/markdown-editable-textinput
 repository: https://github.com/playmoweb/markdown-editable-textinput
 
@@ -12,8 +12,6 @@ dependencies:
     sdk: flutter
   effective_dart: ^1.3.2
   expandable: ^5.0.1
-  translator: ^0.1.7
-
 
 dev_dependencies:
   flutter_test:
