@@ -15,7 +15,7 @@ jobs:
       id: slack-pr
       uses: slackapi/slack-github-action@v1.24.0
       with:
-        payload: "{\"text\":\"New pull request on repository ${{ github.repository }}: ${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.number }}\"}"
+        payload: "{\"text\":\"New pull request on repository ${{ github.repository }}: ${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.issue.number }}\"}"
       env:
         SLACK_WEBHOOK_URL: ${{ vars.SLACK_INCOMING_WEBHOOK_URL }}
         SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
@@ -24,7 +24,7 @@ jobs:
       id: slack-issue
       uses: slackapi/slack-github-action@v1.24.0
       with:
-        payload: "{\"text\":\"New issue on repository ${{ github.repository }}: ${{ github.server_url }}/${{ github.repository }}/issues/${{ github.event.number }}\"}"
+        payload: "{\"text\":\"New issue on repository ${{ github.repository }}: ${{ github.server_url }}/${{ github.repository }}/issues/${{ github.event.issue.number }}\"}"
       env:
         SLACK_WEBHOOK_URL: ${{ vars.SLACK_INCOMING_WEBHOOK_URL }}
         SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
