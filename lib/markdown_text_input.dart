@@ -43,6 +43,9 @@ class MarkdownTextInput extends StatefulWidget {
   /// Default value is true.
   final bool insertLinksByDialog;
 
+  ///Optional focusNode, the Widget creates it's own if not provided
+  final FocusNode? focusNode;
+
   /// If you prefer to use the dialog to insert image, you can choose to use the markdown syntax directly by setting [insertImageByDialog] to false. In this case, the selected text will be used as label and link.
   /// Default value is true.
   final bool insertImageByDialog;
@@ -76,6 +79,7 @@ class MarkdownTextInput extends StatefulWidget {
       this.controller,
       this.insertLinksByDialog = true,
       this.insertImageByDialog = true,
+      this.focusNode,
       this.linkDialogLinkDecoration,
       this.linkDialogTextDecoration,
       this.imageDialogLinkDecoration,
@@ -84,6 +88,7 @@ class MarkdownTextInput extends StatefulWidget {
       this.customSubmitDialogText,
       this.optionnalActionButtons = const []});
 
+
   @override
   _MarkdownTextInputState createState() => _MarkdownTextInputState(controller ?? TextEditingController());
 }
@@ -91,7 +96,7 @@ class MarkdownTextInput extends StatefulWidget {
 class _MarkdownTextInputState extends State<MarkdownTextInput> {
   final TextEditingController _controller;
   TextSelection textSelection = const TextSelection(baseOffset: 0, extentOffset: 0);
-  FocusNode focusNode = FocusNode();
+  late final FocusNode focusNode;
 
   _MarkdownTextInputState(this._controller);
 
@@ -115,6 +120,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
 
   @override
   void initState() {
+    focusNode = widget.focusNode ?? FocusNode();
     _controller.text = widget.initialValue;
     _controller.addListener(() {
       if (_controller.selection.baseOffset != -1) textSelection = _controller.selection;
@@ -126,7 +132,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
   @override
   void dispose() {
     if (widget.controller == null) _controller.dispose();
-    focusNode.dispose();
+    if (widget.focusNode == null) focusNode.dispose();
     super.dispose();
   }
 
