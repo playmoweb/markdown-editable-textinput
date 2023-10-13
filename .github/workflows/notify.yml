@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - run: npm ci && npm run build
     - run: echo "${{ github.event_name }}"
     - name: Notify slack on pull request
       if: ${{ github.event_name == 'pull_request' }}
