@@ -1,11 +1,11 @@
 import 'dart:io';
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:expandable/expandable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:markdown_editable_textinput/format_markdown.dart';
-import 'package:translator/translator.dart';
 
 /// Widget with markdown buttons
 class MarkdownTextInput extends StatefulWidget {
@@ -30,6 +30,9 @@ class MarkdownTextInput extends StatefulWidget {
   /// List of action the component can handle
   final List<MarkdownType> actions;
 
+  /// List of custom action buttons
+  final List<ActionButton> optionnalActionButtons;
+
   /// Optional controller to manage the input
   final TextEditingController? controller;
 
@@ -43,27 +46,48 @@ class MarkdownTextInput extends StatefulWidget {
   ///Optional focusNode, the Widget creates it's own if not provided
   final FocusNode? focusNode;
 
+  /// If you prefer to use the dialog to insert image, you can choose to use the markdown syntax directly by setting [insertImageByDialog] to false. In this case, the selected text will be used as label and link.
+  /// Default value is true.
+  final bool insertImageByDialog;
+
+  /// InputDecoration for the text input of the link dialog
+  final InputDecoration? linkDialogLinkDecoration;
+
+  /// InputDecoration for the link input of the link dialog
+  final InputDecoration? linkDialogTextDecoration;
+
+  /// InputDecoration for the text input of the image dialog
+  final InputDecoration? imageDialogLinkDecoration;
+
+  /// InputDecoration for the link input of the image dialog
+  final InputDecoration? imageDialogTextDecoration;
+
+  /// Custom text for cancel button in dialogs
+  final String? customCancelDialogText;
+
+  /// Custom text for submit button in dialogs
+  final String? customSubmitDialogText;
 
   /// Constructor for [MarkdownTextInput]
-  MarkdownTextInput(
-    this.onTextChanged,
-    this.initialValue, {
-    this.label = '',
-    this.validators,
-    this.textDirection = TextDirection.ltr,
-    this.maxLines = 10,
-    this.actions = const [
-      MarkdownType.bold,
-      MarkdownType.italic,
-      MarkdownType.title,
-      MarkdownType.link,
-      MarkdownType.list
-    ],
-    this.textStyle,
-    this.controller,
-    this.insertLinksByDialog = true,
-    this.focusNode
-  });
+  MarkdownTextInput(this.onTextChanged, this.initialValue,
+      {this.label = '',
+      this.validators,
+      this.textDirection = TextDirection.ltr,
+      this.maxLines = 10,
+      this.actions = const [MarkdownType.bold, MarkdownType.italic, MarkdownType.title, MarkdownType.link, MarkdownType.list],
+      this.textStyle,
+      this.controller,
+      this.insertLinksByDialog = true,
+      this.insertImageByDialog = true,
+      this.focusNode,
+      this.linkDialogLinkDecoration,
+      this.linkDialogTextDecoration,
+      this.imageDialogLinkDecoration,
+      this.imageDialogTextDecoration,
+      this.customCancelDialogText,
+      this.customSubmitDialogText,
+      this.optionnalActionButtons = const []});
+
 
   @override
   _MarkdownTextInputState createState() => _MarkdownTextInputState(controller ?? TextEditingController());
@@ -80,14 +104,13 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
     final basePosition = textSelection.baseOffset;
     var noTextSelected = (textSelection.baseOffset - textSelection.extentOffset) == 0;
 
-    var fromIndex = textSelection.baseOffset;
-    var toIndex = textSelection.extentOffset;
+    var fromIndex = min(textSelection.baseOffset, textSelection.extentOffset);
+    var toIndex = max(textSelection.extentOffset, textSelection.baseOffset);
 
-    final result = FormatMarkdown.convertToMarkdown(type, _controller.text, fromIndex, toIndex,
-        titleSize: titleSize, link: link, selectedText: selectedText ?? _controller.text.substring(fromIndex, toIndex));
+    final result =
+        FormatMarkdown.convertToMarkdown(type, _controller.text, fromIndex, toIndex, titleSize: titleSize, link: link, selectedText: selectedText ?? _controller.text.substring(fromIndex, toIndex));
 
-    _controller.value = _controller.value
-        .copyWith(text: result.data, selection: TextSelection.collapsed(offset: basePosition + result.cursorIndex));
+    _controller.value = _controller.value.copyWith(text: result.data, selection: TextSelection.collapsed(offset: basePosition + result.cursorIndex));
 
     if (noTextSelected) {
       _controller.selection = TextSelection.collapsed(offset: _controller.selection.end - result.replaceCursorIndex);
@@ -134,10 +157,8 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
             cursorColor: Theme.of(context).primaryColor,
             textDirection: widget.textDirection,
             decoration: InputDecoration(
-              enabledBorder:
-                  UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary)),
-              focusedBorder:
-                  UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary)),
+              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary)),
+              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary)),
               hintText: widget.label,
               hintStyle: const TextStyle(color: Color.fromRGBO(63, 61, 86, 0.5)),
               contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
@@ -150,9 +171,9 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
               borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                children: widget.actions.map((type) {
-                  switch (type) {
-                    case MarkdownType.title:
+                children: <Widget>[
+                  ...widget.actions.map((type) {
+                    if (type == MarkdownType.title) {
                       return ExpandableNotifier(
                         child: Expandable(
                           key: Key('H#_button'),
@@ -196,105 +217,32 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                           ),
                         ),
                       );
-                    case MarkdownType.link:
+                    } else if (type == MarkdownType.link || type == MarkdownType.image) {
                       return _basicInkwell(
                         type,
-                        customOnTap: !widget.insertLinksByDialog
+                        customOnTap: (type == MarkdownType.link ? !widget.insertLinksByDialog : !widget.insertImageByDialog)
                             ? null
                             : () async {
-                                var text =
-                                    _controller.text.substring(textSelection.baseOffset, textSelection.extentOffset);
+                                var text = _controller.text.substring(textSelection.baseOffset, textSelection.extentOffset);
 
                                 var textController = TextEditingController()..text = text;
                                 var linkController = TextEditingController();
-                                var textFocus = FocusNode();
-                                var linkFocus = FocusNode();
 
                                 var color = Theme.of(context).colorScheme.secondary;
-                                var language =
-                                    kIsWeb ? window.locale.languageCode : Platform.localeName.substring(0, 2);
 
-                                var textLabel = 'Text';
-                                var linkLabel = 'Link';
-                                try {
-                                  var textTranslation = await GoogleTranslator().translate(textLabel, to: language);
-                                  textLabel = textTranslation.text;
-
-                                  var linkTranslation = await GoogleTranslator().translate(linkLabel, to: language);
-                                  linkLabel = linkTranslation.text;
-                                } catch (e) {
-                                  textLabel = 'Text';
-                                  linkLabel = 'Link';
-                                }
-
-                                await showDialog<void>(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        title: Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: [
-                                            GestureDetector(
-                                                child: Icon(Icons.close), onTap: () => Navigator.pop(context))
-                                          ],
-                                        ),
-                                        content: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            TextField(
-                                              controller: textController,
-                                              decoration: InputDecoration(
-                                                hintText: 'example',
-                                                label: Text(textLabel),
-                                                labelStyle: TextStyle(color: color),
-                                                focusedBorder:
-                                                    OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
-                                                enabledBorder:
-                                                    OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
-                                              ),
-                                              autofocus: text.isEmpty,
-                                              focusNode: textFocus,
-                                              textInputAction: TextInputAction.next,
-                                              onSubmitted: (value) {
-                                                textFocus.unfocus();
-                                                FocusScope.of(context).requestFocus(linkFocus);
-                                              },
-                                            ),
-                                            SizedBox(height: 10),
-                                            TextField(
-                                              controller: linkController,
-                                              decoration: InputDecoration(
-                                                hintText: 'https://example.com',
-                                                label: Text(linkLabel),
-                                                labelStyle: TextStyle(color: color),
-                                                focusedBorder:
-                                                    OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
-                                                enabledBorder:
-                                                    OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
-                                              ),
-                                              autofocus: text.isNotEmpty,
-                                              focusNode: linkFocus,
-                                            ),
-                                          ],
-                                        ),
-                                        contentPadding: EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 0),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () {
-                                              onTap(type, link: linkController.text, selectedText: textController.text);
-                                              Navigator.pop(context);
-                                            },
-                                            child: const Text('OK'),
-                                          ),
-                                        ],
-                                      );
-                                    });
+                                await _basicDialog(textController, linkController, color, text, type);
                               },
                       );
-                    default:
+                    } else {
                       return _basicInkwell(type);
-                  }
-                }).toList(),
+                    }
+                  }).toList(),
+
+
+                  ...widget.optionnalActionButtons.map((ActionButton optionActionButton) {
+                    return _basicInkwell(optionActionButton, customOnTap: optionActionButton.action);
+                  }).toList()
+                ],
               ),
             ),
           )
@@ -303,14 +251,102 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
     );
   }
 
-  Widget _basicInkwell(MarkdownType type, {Function? customOnTap}) {
-    return InkWell(
-      key: Key(type.key),
-      onTap: () => customOnTap != null ? customOnTap() : onTap(type),
-      child: Padding(
-        padding: EdgeInsets.all(10),
-        child: Icon(type.icon),
-      ),
-    );
+  Widget _basicInkwell(dynamic item, {Function? customOnTap}) {
+    Widget widgetToReturn = SizedBox.shrink();
+
+    if (item is MarkdownType) {
+      return InkWell(
+        key: Key(item.key),
+        onTap: () => customOnTap != null ? customOnTap() : onTap(item),
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: Icon(item.icon),
+        ),
+      );
+    } else if (item is ActionButton) {
+      return InkWell(
+        onTap: item.action,
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: item.widget,
+        ),
+      );
+    }
+
+    return widgetToReturn;
+  }
+
+  Future<void> _basicDialog(
+    TextEditingController textController,
+    TextEditingController linkController,
+    Color color,
+    String text,
+    MarkdownType type,
+  ) async {
+    var finalTextInputDecoration = type == MarkdownType.link ? widget.linkDialogTextDecoration : widget.imageDialogTextDecoration;
+    var finalLinkInputDecoration = type == MarkdownType.link ? widget.linkDialogLinkDecoration : widget.imageDialogLinkDecoration;
+
+    var textFocus = FocusNode();
+    var linkFocus = FocusNode();
+
+    return await showDialog<void>(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: textController,
+                  decoration: finalTextInputDecoration ??
+                      InputDecoration(
+                        hintText: 'Example text',
+                        label: Text('Text'),
+                        labelStyle: TextStyle(color: color),
+                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
+                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
+                      ),
+                  autofocus: text.isEmpty,
+                  focusNode: textFocus,
+                  textInputAction: TextInputAction.next,
+                  onSubmitted: (value) {
+                    textFocus.unfocus();
+                    FocusScope.of(context).requestFocus(linkFocus);
+                  },
+                ),
+                SizedBox(height: 10),
+                TextField(
+                  controller: linkController,
+                  decoration: finalLinkInputDecoration ??
+                      InputDecoration(
+                        hintText: 'https://example.com',
+                        label: Text('Link'),
+                        labelStyle: TextStyle(color: color),
+                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
+                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
+                      ),
+                  autofocus: text.isNotEmpty,
+                  focusNode: linkFocus,
+                ),
+              ],
+            ),
+            contentPadding: EdgeInsets.fromLTRB(24.0, 32.0, 24.0, 12.0),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(widget.customCancelDialogText ?? 'Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  onTap(type, link: linkController.text, selectedText: textController.text);
+                  Navigator.pop(context);
+                },
+                child: Text(widget.customSubmitDialogText ?? 'OK'),
+              ),
+            ],
+          );
+        });
   }
 }

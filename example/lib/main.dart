@@ -57,6 +57,9 @@ class _MyAppState extends State<MyApp> {
                           actions: MarkdownType.values,
                           controller: controller,
                           textStyle: TextStyle(fontSize: 16),
+                          optionnalActionButtons: [
+                            ActionButton(widget: Icon(Icons.add), action: () => controller.text = '${controller.text} test ')
+                          ],
                         ),
                         TextButton(
                           onPressed: () {

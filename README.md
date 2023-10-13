@@ -11,6 +11,8 @@ MarkdownEditableTextInput is a TextField Widget that allow you to convert easily
 - [x] Convert to Code, Quote, Links
 - [x] Convert to Heading (H1, H2, H3, H4, H5, H6) and Links
 - [x] Support text direction
+- [x] Dialog mode to enter link and picture
+- [x] Possibility to add custom buttons to the action bar
 
 ## Demo
 ![](pictures/test_edition.gif)
@@ -37,6 +39,10 @@ The color of the MarkdownTextInput is defined by the color set in your Theme :
 | TextEditingController controller |         TextEditingController()          | Pass your own controller. Can be used to clear the input for example |
 |       TextStyle textStyle        |  Theme.of(context).textTheme.bodyText2   |                      Overrides input text style                      |
 |    bool insertLinksByDialog;     |                   true                   |              Choose to use dialog or not to insert link              |
+|    bool insertImageByDialog;     |                   true                   |            Choose to use dialog or not to insert an image            |
+|    bool insertImageByDialog;     |                   true                   |            Choose to use dialog or not to insert an image            |
+|   bool customCancelDialogText;   |                 String?                  |             Text used by dialog for close dialog action              |
+|   bool customSubmitDialogText;   |                 String?                  |            Text used by dialog for validate dialog action            |
 
 ### Example
 You can see an example of how to use this package [here](https://github.com/playmoweb/markdown-editable-textinput/tree/master/example)

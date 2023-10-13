@@ -66,7 +66,7 @@ class FormatMarkdown {
         replaceCursorIndex = 0;
         break;
       case MarkdownType.image:
-        changedData = '![${data.substring(fromIndex, toIndex)}](${data.substring(fromIndex, toIndex)})';
+        changedData = '![$selectedText](${link ?? selectedText})';
         replaceCursorIndex = 3;
         break;
     }
@@ -130,6 +130,17 @@ enum MarkdownType {
 
   /// For ![Alt text](link)
   image,
+}
+
+/// Custom button object
+class ActionButton {
+  /// [widget] is the icon in the action bar
+  final Widget widget;
+  /// Action to perform when button is pressed
+  final Function() action;
+
+  /// return [ActionButton]
+  ActionButton({required this.widget, required this.action});
 }
 
 /// Add data to [MarkdownType] enum
