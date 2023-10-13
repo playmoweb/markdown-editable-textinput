@@ -4,7 +4,6 @@ on:
     types: [opened]
   issues:
     types: [opened]
-  pull_request_comment:
 
 jobs:
   integration_test_incoming_webhook:
@@ -26,14 +25,6 @@ jobs:
       id: slackIncoming
       uses: ./
       payload: "{\"text\":\"New issue on repository ${{ github.repository }}: ${{ github.server_url }}/${{ github.repository }}/issues/${{ github.event.number }}\"}"
-      env:
-        SLACK_WEBHOOK_URL: ${{ vars.SLACK_INCOMING_WEBHOOK_URL }}
-        SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-    - name: Notify slack on pull request comment
-      if: ${{ github.event_name == 'pull_request_comment' }}
-      id: slackIncoming
-      uses: ./
-      payload: "{\"text\":\"New comment on repository ${{ github.repository }}: ${{ github.server_url }}/${{ github.repository }}/issues/${{ github.event.number }}\"}"
       env:
         SLACK_WEBHOOK_URL: ${{ vars.SLACK_INCOMING_WEBHOOK_URL }}
         SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
