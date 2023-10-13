@@ -12,7 +12,7 @@ jobs:
     steps:
     - name: Notify slack on pull request
       if: ${{ github.event_name == 'pull_request' }}
-      id: slack
+      id: slack-pr
       uses: slackapi/slack-github-action@v1.24.0
       with:
         payload: "{\"text\":\"New pull request on repository ${{ github.repository }}: ${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.number }}\"}"
@@ -21,7 +21,7 @@ jobs:
         SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
     - name: Notify slack on issue
       if: ${{ github.event_name == 'pull_request' }}
-      id: slack
+      id: slack-issue
       uses: slackapi/slack-github-action@v1.24.0
       with:
         payload: "{\"text\":\"New issue on repository ${{ github.repository }}: ${{ github.server_url }}/${{ github.repository }}/issues/${{ github.event.number }}\"}"
